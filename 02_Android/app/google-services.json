@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "892469349625",
+    "project_id": "b2023-gr2sw-dacm",
+    "storage_bucket": "b2023-gr2sw-dacm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892469349625:android:da42961ecf3be71eafa628",
+        "android_client_info": {
+          "package_name": "com.example.primer_aplicacion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgILas_XdaXNYkDTi5Kp68nrCibQww6PA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
