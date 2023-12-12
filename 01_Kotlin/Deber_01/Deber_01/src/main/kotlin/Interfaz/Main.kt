@@ -1,34 +1,15 @@
-import java.io.File
-import java.io.FileWriter
-
-// Entidad de Album Musical con sus Propiedades
-
-data class Album(
-    val id: Int,
-    var nombre: String,
-    var anioLanzamiento: Int,
-    var esExplicito: Boolean,
-    var precio: Double,
-    var genero: String,
-    var canciones: MutableList<Cancion> = mutableListOf()
-
-)
-
-// Entidad de Canciones que contiene un Álbum Musical con sus Propiedades
-
-data class Cancion(
-    val id: Int,
-    var nombre: String,
-    var duracion: Double,
-    var artista: String,
-    var anioLanzamiento: Int,
-    var compositor: String,
-)
+package Interfaz
+import Entidades.Album
+import Entidades.Cancion
+import java.lang.NumberFormatException
 
 // Clase principal que contiene las Operaciones CRUD
 
 class CrudMusicalApp{
     private val albums = mutableListOf<Album>()
+
+    // Funcion para Guardar Datos creados en un Archivo
+
 
     // Funcion para crear un nuevo Album (Operacion CREATE)
     fun crearAlbum(nombre: String, anioLanzamiento: Int, esExplicito: Boolean, precio: Double, genero: String){
@@ -123,24 +104,51 @@ fun main(){
     // Crear una Instancia de la aplicacion CRUD musical
     val crudMusicalApp = CrudMusicalApp()
 
-    // Crear álbum
-    crudMusicalApp.crearAlbum("The Getaway", 2016, true, 29.99, "Funk Rock")
-    crudMusicalApp.crearAlbum("Black Album", 1991, false, 15.00, "Thrash Metal")
-    crudMusicalApp.mostrarAlbum()
+    var opcion: Int
 
-    /*
-    // Actualizar álbum
-    crudMusicalApp.actualizarAlbum(1, "AlbumActualizado", 2023, false, 15.99, "Funk")
-    crudMusicalApp.mostrarAlbum()
+    do{
+        println("\nMenu:")
+        println("1. Crear Álbum")
+        println("2. Mostrar Álbums")
+        println("3. Actualizar Álbum")
+        println("4. Eliminar Álbum")
+        println("5. Agregar Canción a Álbum")
+        println("6. Salir")
+        print("Seleccione una opción: ")
 
-    // Eliminar álbum
-    crudMusicalApp.eliminarAlbum(1)
-    crudMusicalApp.mostrarAlbum()
+        try{
+            opcion = readLine()?.toInt() ?:0
 
-     */
-    // Agregar canción a álbum
-    crudMusicalApp.agregarCancionAAlbum(1, "Dark Necessities", 4.5, "Red Hot Chili Peppers", 2016, "Anthony Kiedis")
-    crudMusicalApp.agregarCancionAAlbum(1, "Go Robot", 2.5, "Red Hot Chili Peppers", 2016, "Rick Rubin")
-    crudMusicalApp.mostrarAlbum()
+            // Ciclo Switch en Kotlin
+            when (opcion){
+                1 -> {
+                    println("\n------- Crear Álbum -------")
+                }
+                2 -> {
+                    println("\n------- Mostrar Álbums Almacenados -------")
+                }
+                3 -> {
+                    println("\n------- Actualizar Álbum -------")
+                }
+                4 -> {
+                    println("\n------- Eliminar Álbum -------")
+                }
+                5 -> {
+                    println("\n------- Agregar Canción a un Álbum -------")
+                }
+                6 -> {
+                    println("\nSaliendo de la Aplicacion....")
+                }
+                else -> {
+                    println("\nOpcion No Válida. Prueba otra vez")
+                }
+            }
+
+        }catch (ex: NumberFormatException){
+            println("Error: Ingresa un Número Valido")
+            opcion = 0
+        }
+
+    }while (opcion != 6)
 
 }
