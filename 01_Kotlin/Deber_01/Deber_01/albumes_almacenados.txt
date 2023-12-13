@@ -1,0 +1,15 @@
+---- Álbumes Almacenados ----
+ID: 1
+Nombre: The Getaway
+Año de Lanzamiento: 2016
+Es Explícito: true
+Precio: 19.99
+Género: Rock
+---- Canciones del Álbum ----
+  - ID: 2
+    Nombre: Donda
+    Duración: 2.45
+    Artista: RHCP
+    Año de Lanzamiento: 2015
+    Compositor: Kiedis
+
