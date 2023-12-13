@@ -1,6 +1,6 @@
 package Entidades
 
-// Entidad de Canciones que contiene un Álbum Musical con sus Propiedades
+// Entidad de Canciones que contiene un Álbum Musical con sus Atributos
 
 data class Cancion(
     val id: Int,

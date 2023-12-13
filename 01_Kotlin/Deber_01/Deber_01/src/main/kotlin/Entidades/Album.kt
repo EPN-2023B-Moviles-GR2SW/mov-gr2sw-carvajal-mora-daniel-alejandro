@@ -1,6 +1,6 @@
 package Entidades
 
-// Entidad de Album Musical con sus Propiedades
+// Entidad de Album Musical con sus Atributos
 
 data class Album(
     val id: Int,
