@@ -26,7 +26,6 @@ class CrudOperations(private val fileWriter: FileWriter) {
 
     // Funcion para mostrar la lista de Albumes y sus Canciones (Operacion READ)
     fun mostrarAlbum() {
-        println("Lista de Albums:")
         albums.forEach { album ->
             println("ID: ${album.id}")
             println("Nombre: ${album.nombre}")
@@ -44,6 +43,13 @@ class CrudOperations(private val fileWriter: FileWriter) {
                 println("     Compositor: ${cancion.compositor}")
             }
             println()
+        }
+    }
+
+    // Funcion para mostrar los Albumes disponibles para Actualizar (Operacion READ)
+    fun mostrarAlbumAct(){
+        albums.forEach{album ->
+            println("ID: ${album.id}, Nombre: ${album.nombre}")
         }
     }
 
@@ -93,6 +99,10 @@ class CrudOperations(private val fileWriter: FileWriter) {
         val album = albums.find { it.id == idAlbum }
 
         if (album != null){
+            println("\n------- Agregar Canción al Álbum -------")
+
+            val contadorIdLocal = album.canciones.size + 1
+
             print("Nombre de la canción: ")
             val nombreCancion = readLine() ?: ""
             print("Duración de la canción: ")
@@ -106,12 +116,11 @@ class CrudOperations(private val fileWriter: FileWriter) {
 
             // Atributos que tendra la Cancion Creada
             val nuevaCancion = Cancion(
-                generarId(),
-                nombreCancion,
-                duracion,
-                artista,
-                anioLanzamientoCancion,
-                compositor
+                nombre = nombreCancion,
+                duracion = duracion,
+                artista = artista,
+                anioLanzamiento = anioLanzamientoCancion,
+                compositor = compositor
             )
             album.canciones.add(nuevaCancion)
             println("Cancion Agregada al Album $idAlbum: $nuevaCancion")

@@ -13,9 +13,10 @@ class FileWriter(private val archivo: String) {
         try {
             val archivo = File(archivo)
             FileWriter(archivo).use { fw ->
-                fw.write("---- Álbumes Almacenados ----\n") // Título del Archivo
+                fw.write("------ Álbumes Almacenados ------\n") // Título del Archivo
                 albums.forEach { album ->
                     with(album) {
+                        fw.write("Álbum Musical\n")
                         fw.write("ID: $id\n")
                         fw.write("Nombre: $nombre\n")
                         fw.write("Año de Lanzamiento: $anioLanzamiento\n")
@@ -25,7 +26,7 @@ class FileWriter(private val archivo: String) {
 
                         // Si hay canciones se escriben en el archivo
                         if (canciones.isNotEmpty()) {
-                            fw.write("---- Canciones del Álbum ----\n") // Título del Archivo
+                            fw.write("------ Canciones del Álbum ------\n") // Título del Archivo
                             canciones.forEach { cancion ->
                                 with(cancion) {
                                     fw.write("  - ID: $id\n")
