@@ -1,0 +1,21 @@
+Aplicaciones Móviles - Deber 01
+Programa Elaborado Por: Daniel Carvajal
+
+------ Álbumes Almacenados ------
+Álbum Musical
+ID: 1
+Nombre: Donda
+Artista: Donda
+Año de Lanzamiento: 2022
+Es Explícito: true
+Precio: 1995.0
+Género: Donda
+------ Canciones del Álbum ------
+  - ID: 1
+    Nombre: Donda
+    Duración: 124.0
+    Artista Colaboración: Donda
+    Tiene Letra: false
+    Escritor: Donda
+    Productor: Donda
+
