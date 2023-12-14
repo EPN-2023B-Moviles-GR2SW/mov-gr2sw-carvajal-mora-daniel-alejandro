@@ -12,7 +12,7 @@ import java.lang.NumberFormatException
 fun main(){
 
     // Instancia de las Clases de Operaciones
-    val fileWriter = FileWriter("albumes_almacenados.txt")
+    val fileWriter = FileWriter("Albumes_Almacenados.txt")
     val crudOperations = CrudOperations(fileWriter)
 
     var opcion: Int
@@ -36,16 +36,23 @@ fun main(){
                     println("\n------- Crear Álbum -------")
                     print("Nombre del álbum: ")
                     val nombre = readLine() ?: ""
+                    print("Artista del álbum: ")
+                    val artista = readLine() ?: ""
                     print("Año de lanzamiento: ")
                     val anioLanzamiento = readLine()?.toIntOrNull() ?: 0
-                    print("Es explícito (true/false): ")
-                    val esExplicito = readLine()?.toBoolean() ?: false
+                    print("Es explícito (Si/No): ")
+                    val esExplicitoInput = readLine()?.toLowerCase()
+                    val esExplicito = when (esExplicitoInput){
+                        "si", "SI", "Si" -> true
+                        "no" -> false
+                        else -> false
+                    }
                     print("Precio: ")
                     val precio = readLine()?.toDoubleOrNull() ?: 0.0
                     print("Género: ")
                     val genero = readLine() ?: ""
 
-                    crudOperations.crearAlbum(nombre, anioLanzamiento, esExplicito, precio, genero)
+                    crudOperations.crearAlbum(nombre, artista, anioLanzamiento, esExplicito, precio, genero)
                 }
                 2 -> {
                     println("\n------- Mostrar Álbums Almacenados -------")
@@ -55,10 +62,10 @@ fun main(){
                 3 -> {
                     println("\n------- Actualizar Álbum -------")
                     // Mostrar ID y nombre de los álbumes almacenados en memoria
-                    println("Álbumes disponibles para actualizar:")
+                    println("Álbumes disponibles para Actualizar:")
                     crudOperations.mostrarAlbumAct()
 
-                    print("ID del álbum a actualizar: ")
+                    print("ID del álbum a Actualizar: ")
                     val idActualizar = readLine()?.toIntOrNull() ?: 0
                     crudOperations.actualizarAlbum(idActualizar)
                 }
@@ -67,7 +74,7 @@ fun main(){
                     println("Álbumes disponibles para Eliminar:")
                     crudOperations.mostrarAlbumAct()
 
-                    print("ID del álbum a eliminar: ")
+                    print("ID del álbum a Eliminar: ")
                     val idEliminar = readLine()?.toIntOrNull() ?: 0
                     // Implementa la lógica para eliminar el álbum y guarda los cambios en el archivo
                     crudOperations.eliminarAlbum(idEliminar)
@@ -77,7 +84,7 @@ fun main(){
                     println("Lista de Álbumes Almacenados")
                     crudOperations.mostrarAlbumAct()
 
-                    print("ID del álbum al que agregar la canción: ")
+                    print("ID del álbum al que desea agregar la canción: ")
                     val idAlbum = readLine()?.toIntOrNull() ?: 0
                     crudOperations.agregarCancionAAlbum(idAlbum)
 

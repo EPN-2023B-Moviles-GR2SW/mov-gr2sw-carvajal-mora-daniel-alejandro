@@ -10,10 +10,11 @@ class CrudOperations(private val fileWriter: FileWriter) {
     private val albums = mutableListOf<Album>()
 
     // Funcion para crear un nuevo Album (Operacion CREATE)
-    fun crearAlbum(nombre: String, anioLanzamiento: Int, esExplicito: Boolean, precio: Double, genero: String){
+    fun crearAlbum(nombre: String, artista: String, anioLanzamiento: Int, esExplicito: Boolean, precio: Double, genero: String){
         val nuevoAlbum = Album(
             generarId(),
             nombre,
+            artista,
             anioLanzamiento,
             esExplicito,
             precio,
@@ -29,8 +30,9 @@ class CrudOperations(private val fileWriter: FileWriter) {
         albums.forEach { album ->
             println("ID: ${album.id}")
             println("Nombre: ${album.nombre}")
+            println("Artista: ${album.artista}")
             println("Año de Lanzamiento: ${album.anioLanzamiento}")
-            println("Es Explicito: ${album.esExplicito}")
+            println("Es Explícito: ${if (album.esExplicito) "Si" else "No"}")
             println("Precio: ${album.precio}")
             println("Genero: ${album.genero}")
             println("Canciones:")
@@ -38,9 +40,10 @@ class CrudOperations(private val fileWriter: FileWriter) {
                 println("   - ID: ${cancion.id}")
                 println("     Nombre: ${cancion.nombre}")
                 println("     Duración: ${cancion.duracion}")
-                println("     Artista: ${cancion.artista}")
-                println("     Año de Lanzamiento: ${cancion.anioLanzamiento}")
-                println("     Compositor: ${cancion.compositor}")
+                println("     Colaboración: ${cancion.artistaColaborador}")
+                println("     Tiene Letra: ${if (cancion.letra) "Si" else "No"}")
+                println("     Escritor: ${cancion.escritor}")
+                println("     Productor: ${cancion.productor}")
             }
             println()
         }
@@ -49,7 +52,7 @@ class CrudOperations(private val fileWriter: FileWriter) {
     // Funcion para mostrar los Albumes disponibles para Actualizar (Operacion READ)
     fun mostrarAlbumAct(){
         albums.forEach{album ->
-            println("ID: ${album.id}, Nombre: ${album.nombre}")
+            println("ID: ${album.id}, Nombre: ${album.nombre}, Artista: ${album.artista}")
         }
     }
 
@@ -59,6 +62,8 @@ class CrudOperations(private val fileWriter: FileWriter) {
         if (album != null) {
             print("Nuevo nombre del álbum (${album.nombre}): ")
             val nuevoNombre = readLine() ?: album.nombre
+            print("Nuevo nombre del artista: (${album.artista})")
+            val nuevoArtista = readLine() ?: album.artista
             print("Nuevo año de lanzamiento (${album.anioLanzamiento}): ")
             val nuevoAnioLanzamiento = readLine()?.toIntOrNull() ?: album.anioLanzamiento
             print("¿Es explícito? (${album.esExplicito}): ")
@@ -70,6 +75,7 @@ class CrudOperations(private val fileWriter: FileWriter) {
 
             // Actualizar los atributos del álbum con los nuevos valores ingresados
             album.nombre = nuevoNombre
+            album.artista = nuevoArtista
             album.anioLanzamiento = nuevoAnioLanzamiento
             album.esExplicito = nuevoEsExplicito
             album.precio = nuevoPrecio
@@ -107,20 +113,28 @@ class CrudOperations(private val fileWriter: FileWriter) {
             val nombreCancion = readLine() ?: ""
             print("Duración de la canción: ")
             val duracion = readLine()?.toDoubleOrNull() ?: 0.0
-            print("Artista de la canción: ")
-            val artista = readLine() ?: ""
-            print("Año de lanzamiento de la canción: ")
-            val anioLanzamientoCancion = readLine()?.toIntOrNull() ?: 0
-            print("Compositor de la canción: ")
-            val compositor = readLine() ?: ""
+            print("Artista Invitado de la canción: ")
+            val artistaColaborador = readLine() ?: ""
+            print("¿La Canción tiene letra? (Si/No): ")
+            val tieneletraInput = readLine()?.toLowerCase()
+            val tieneletra = when (tieneletraInput){
+                "si", "SI", "Si" -> true
+                "no" -> false
+                else -> false
+            }
+            print("Escritor de la canción: ")
+            val escritor = readLine() ?: ""
+            print("Productor de la canción: ")
+            val productor = readLine() ?: ""
 
             // Atributos que tendra la Cancion Creada
             val nuevaCancion = Cancion(
                 nombre = nombreCancion,
                 duracion = duracion,
-                artista = artista,
-                anioLanzamiento = anioLanzamientoCancion,
-                compositor = compositor
+                artistaColaborador = artistaColaborador,
+                letra = tieneletra,
+                escritor = escritor,
+                productor = productor
             )
             album.canciones.add(nuevaCancion)
             println("Cancion Agregada al Album $idAlbum: $nuevaCancion")

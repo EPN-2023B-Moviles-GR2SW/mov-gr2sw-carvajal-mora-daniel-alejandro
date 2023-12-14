@@ -1,37 +1,21 @@
+Aplicaciones Móviles - Deber 01
+Programa Elaborado Por: Daniel Carvajal
+
 ------ Álbumes Almacenados ------
 Álbum Musical
 ID: 1
-Nombre: Donda
-Año de Lanzamiento: 1987
+Nombre: Ye
+Artista: Ye
+Año de Lanzamiento: 1995
 Es Explícito: true
 Precio: 19.99
-Género: Funk Rock
+Género: Trap
 ------ Canciones del Álbum ------
   - ID: 1
-    Nombre: Causa
-    Duración: 2.15
-    Artista: Doraemon
-    Año de Lanzamiento: 1998
-    Compositor: ChoneKillers
-  - ID: 3
-    Nombre: dsadas
-    Duración: 1321.0
-    Artista: dwqdqw
-    Año de Lanzamiento: 1234
-    Compositor: dwqdwq
-
-Álbum Musical
-ID: 2
-Nombre: Donda 2
-Año de Lanzamiento: 2015
-Es Explícito: false
-Precio: 25.0
-Género: Metal
------- Canciones del Álbum ------
-  - ID: 2
-    Nombre: Felipe
-    Duración: 2.15
-    Artista: Mamawebo
-    Año de Lanzamiento: 1850
-    Compositor: Maigua
+    Nombre: Donda
+    Duración: 2.56
+    Artista Colaboración: Ye
+    Tiene Letra: true
+    Escritor: Ye
+    Productor: Ye
 

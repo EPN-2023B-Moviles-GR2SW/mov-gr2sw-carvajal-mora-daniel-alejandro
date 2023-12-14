@@ -6,9 +6,10 @@ data class Cancion(
     val id: Int = generarId(),
     var nombre: String,
     var duracion: Double,
-    var artista: String,
-    var anioLanzamiento: Int,
-    var compositor: String,
+    var artistaColaborador: String,
+    var letra: Boolean,
+    var escritor: String,
+    var productor: String
 ){
     companion object{
         private var contadorId: Int = 1
