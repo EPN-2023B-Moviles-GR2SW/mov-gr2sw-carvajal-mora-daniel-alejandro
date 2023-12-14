@@ -1,0 +1,21 @@
+Aplicaciones Móviles - Deber 01
+Programa Elaborado Por: Daniel Carvajal
+
+------ Álbumes Almacenados ------
+Álbum Musical
+ID: 1
+Nombre: Ye
+Artista: Ye
+Año de Lanzamiento: 1995
+Es Explícito: true
+Precio: 19.99
+Género: Trap
+------ Canciones del Álbum ------
+  - ID: 1
+    Nombre: Donda
+    Duración: 2.56
+    Artista Colaboración: Ye
+    Tiene Letra: true
+    Escritor: Ye
+    Productor: Ye
+
