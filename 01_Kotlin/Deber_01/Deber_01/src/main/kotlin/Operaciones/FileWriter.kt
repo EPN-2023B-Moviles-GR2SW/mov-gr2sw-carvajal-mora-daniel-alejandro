@@ -19,12 +19,17 @@ class FileWriter(private val archivo: String) {
                 fw.write("------ Álbumes Almacenados ------\n") // Título del Archivo
                 albums.forEach { album ->
                     with(album) {
+
+                        // Convertir Booleanos a "Si" o "No"
+                        val esExplicitoString = if (esExplicito) "Si" else "No"
+
+
                         fw.write("Álbum Musical\n")
                         fw.write("ID: $id\n")
                         fw.write("Nombre: $nombre\n")
                         fw.write("Artista: $artista\n")
                         fw.write("Año de Lanzamiento: $anioLanzamiento\n")
-                        fw.write("Es Explícito: $esExplicito\n")
+                        fw.write("Es Explícito: $esExplicitoString\n")
                         fw.write("Precio: $precio\n")
                         fw.write("Género: $genero\n")
 
@@ -33,11 +38,15 @@ class FileWriter(private val archivo: String) {
                             fw.write("------ Canciones del Álbum ------\n") // Título del Archivo
                             canciones.forEach { cancion ->
                                 with(cancion) {
+
+                                    // Convertir Booleanos a "Si" o "No"
+                                    val letraString = if (letra) "Si" else "No"
+
                                     fw.write("  - ID: $id\n")
                                     fw.write("    Nombre: $nombre\n")
                                     fw.write("    Duración: $duracion\n")
                                     fw.write("    Artista Colaboración: $artistaColaborador\n")
-                                    fw.write("    Tiene Letra: $letra\n")
+                                    fw.write("    Tiene Letra: $letraString\n")
                                     fw.write("    Escritor: $escritor\n")
                                     fw.write("    Productor: $productor\n" )
                                 }

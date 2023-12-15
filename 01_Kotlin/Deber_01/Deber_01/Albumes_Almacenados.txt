@@ -4,18 +4,19 @@ Programa Elaborado Por: Daniel Carvajal
 ------ Álbumes Almacenados ------
 Álbum Musical
 ID: 1
+Nombre: Starboy
+Artista: The Weeknd
+Año de Lanzamiento: 2016
+Es Explícito: Si
+Precio: 25.99
+Género: Pop
+
+Álbum Musical
+ID: 2
 Nombre: Donda
-Artista: Donda
-Año de Lanzamiento: 2022
-Es Explícito: true
-Precio: 1995.0
-Género: Donda
------- Canciones del Álbum ------
-  - ID: 1
-    Nombre: Donda
-    Duración: 124.0
-    Artista Colaboración: Donda
-    Tiene Letra: false
-    Escritor: Donda
-    Productor: Donda
+Artista: Ye
+Año de Lanzamiento: 2021
+Es Explícito: No
+Precio: 15.99
+Género: Trap
 
