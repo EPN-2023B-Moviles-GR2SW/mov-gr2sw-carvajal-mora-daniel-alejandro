@@ -1,6 +1,8 @@
 package com.example.examen_primer_bimestre
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,32 +17,22 @@ import com.example.examen_primer_bimestre.ui.theme.Examen_Primer_BimestreTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            Examen_Primer_BimestreTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+        setContentView(R.layout.activity_main)
+
+        // Funcionalidad Botones
+
+        val botonAgregarAlbum = findViewById<Button>(R.id.btn_Agregar_Album)
+        botonAgregarAlbum.setOnClickListener{
+            irActividad(AgregarAlbum::class.java)
         }
+
+    }
+
+
+    // Funcion
+    fun irActividad(clase: Class<*>){
+        val intent = Intent(this, clase)
+        startActivity(intent)
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Examen_Primer_BimestreTheme {
-        Greeting("Android")
-    }
-}
