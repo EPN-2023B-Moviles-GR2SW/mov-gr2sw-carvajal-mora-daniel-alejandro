@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
 
 
     // Funcion
+
     fun irActividad(clase: Class<*>){
         val intent = Intent(this, clase)
         startActivity(intent)
