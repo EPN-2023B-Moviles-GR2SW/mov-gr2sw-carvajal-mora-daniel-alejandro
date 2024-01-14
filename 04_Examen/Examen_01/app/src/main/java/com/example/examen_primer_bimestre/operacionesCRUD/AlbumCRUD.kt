@@ -12,11 +12,7 @@ class AlbumCRUD {
     // Operacion CREATE para crear un nuevo album
     fun crearAlbum(album: Album) {
         val listaAlbumes = getAllAlbums()
-        if (listaAlbumes.isEmpty()) {
-            album.id = 0
-        } else {
-            album.id = listaAlbumes.last().id + 1
-        }
+        album.id = listaAlbumes.lastOrNull()?.id?.plus(1) ?: 0
         listaAlbumes.add(album)
     }
 
@@ -27,11 +23,7 @@ class AlbumCRUD {
 
     // Operacion READ para visualizar un Album por su ID
     fun getById(id: Int): Album? {
-        var albumEncontrado: Album? = null
-        getAllAlbums().forEach { album: Album ->
-            if (album.id == id) albumEncontrado = album
-        }
-        return albumEncontrado
+        return getAllAlbums().find { album -> album.id == id }
     }
 
     // Operacion UPDATE para actualizar un Album
@@ -51,19 +43,19 @@ class AlbumCRUD {
     }
 
     // Operacion DELETE para eliminar un Album por su ID
-    fun eliminarAlbumById(id: Int){
+    fun eliminarAlbumById(id: Int) {
         val listaAlbumes = getAllAlbums()
         val album = getById(id)
 
-        if (album != null) {
-            // Eliminar la referencia del álbum en las canciones
-            val listaCanciones = getAllCanciones()
-            album.canciones.forEach { cancion ->
-                listaCanciones.remove(cancion)
+        album?.let {
+            // Verificar que la lista de canciones no sea nula
+            it.canciones?.let { cancionesDelAlbum ->
+                // Eliminar la referencia del álbum en las canciones
+                getAllCanciones().removeAll(cancionesDelAlbum)
             }
 
             // Eliminar el álbum de la lista
-            listaAlbumes.remove(album)
+            listaAlbumes.remove(it)
         }
     }
 

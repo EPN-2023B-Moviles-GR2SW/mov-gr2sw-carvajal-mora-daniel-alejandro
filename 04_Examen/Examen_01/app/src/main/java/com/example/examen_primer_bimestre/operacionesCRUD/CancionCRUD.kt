@@ -21,6 +21,11 @@ class CancionCRUD {
         listaCanciones.add(cancion)
     }
 
+    // Operación READ para obtener todas las canciones asociadas a un álbum por su ID
+    fun getCancionesByAlbumId(albumId: Int): List<Cancion> {
+        return BaseDeDatos.bibliotecaCanciones.filter { it.albumId == albumId }
+    }
+
     // Operacion READ para visualizar todas las canciones almacenadas
     fun getAllCanciones(): ArrayList<Cancion> {
         return BaseDeDatos.bibliotecaCanciones

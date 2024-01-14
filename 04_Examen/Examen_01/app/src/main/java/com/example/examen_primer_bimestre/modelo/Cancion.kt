@@ -6,7 +6,7 @@ data class Cancion(
     var nombre: String,
     var duracion: Double,
     var artistaColaborador: String,
-    var letra: Boolean = false,
+    var letra: Boolean,
     var escritor: String,
     var productor: String
 ) {
