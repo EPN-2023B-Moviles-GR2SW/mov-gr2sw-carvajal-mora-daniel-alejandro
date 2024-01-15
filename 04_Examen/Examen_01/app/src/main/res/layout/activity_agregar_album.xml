@@ -80,7 +80,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sw_Explicito_Album"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.487" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/input_Nombre_Album"
@@ -121,9 +121,9 @@
         android:id="@+id/sw_Explicito_Album"
         android:layout_width="173dp"
         android:layout_height="41dp"
-        android:layout_marginTop="20dp"
-        android:text="¿Es Explícito?"
+        android:layout_marginTop="12dp"
         android:checked="false"
+        android:text="¿Es Explícito?"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.243"

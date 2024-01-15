@@ -9,16 +9,23 @@ class CancionCRUD {
     // Operaciones CRUD para trabajar con Cancion
 
     // Operacion CREATE para crear una nueva Cancion
-    fun create(id: Int, cancion: Cancion) {
+    fun create(cancion: Cancion) {
         val listaCanciones = getAllCanciones()
-        // Verificar que el ID no exista ya en la lista
-        if (listaCanciones.any { it.id == id }) {
-            throw IllegalArgumentException("Ya existe una canción con el ID $id.")
-        }
-        // Asignar el ID proporcionado a la canción
-        cancion.id = id
+        // Asignar el ID automáticamente
+        cancion.id = obtenerNuevoId()
         // Agregar la canción a la lista
         listaCanciones.add(cancion)
+
+        // También podrías considerar actualizar la lista de canciones asociadas al álbum
+        val listaAlbumes = getAllAlbumes()
+        val album = listaAlbumes.find { it.id == cancion.albumId }
+        album?.canciones?.add(cancion)
+    }
+
+    // Función auxiliar para obtener un nuevo ID
+    private fun obtenerNuevoId(): Int {
+        // Lógica para generar un nuevo ID, puedes adaptarla según tus necesidades
+        return getAllCanciones().maxByOrNull { it.id }?.id?.plus(1) ?: 1
     }
 
     // Operación READ para obtener todas las canciones asociadas a un álbum por su ID

@@ -18,6 +18,7 @@ import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.modelo.Cancion
 import com.example.examen_primer_bimestre.operacionesCRUD.AlbumCRUD
 import com.example.examen_primer_bimestre.operacionesCRUD.CancionCRUD
+import com.google.android.material.snackbar.Snackbar
 
 class VerCanciones : AppCompatActivity() {
 
@@ -34,6 +35,13 @@ class VerCanciones : AppCompatActivity() {
         botonRegresarHomeCanciones.setOnClickListener {
             irActividad(MainActivity::class.java)
         }
+
+        val botonAgregarCanciones = findViewById<Button>(R.id.btn_Agregar_Canciones)
+        botonAgregarCanciones.setOnClickListener {
+            val albumId = intent.getIntExtra("ALBUM_ID", -1)
+            irActividadConID(AgregarCancion::class.java, albumId)
+        }
+
 
         // Obtener el ID del álbum desde el Intent
         val albumId =  intent.getIntExtra("ALBUM_ID", -1)
@@ -56,6 +64,14 @@ class VerCanciones : AppCompatActivity() {
             listViewCanciones.adapter = adaptadorCanciones
 
 
+            // Obtener el nombre de la canción agregada de los extras del Intent
+            val nombreCancionAgregada = intent.getStringExtra("NOMBRE_CANCION_AGREGADA")
+
+            // Verificar si hay un nombre de canción agregada
+            if (!nombreCancionAgregada.isNullOrEmpty()) {
+                // Mostrar SnackBar con el mensaje de la canción agregada
+                mostrarSnackbar("Canción Agregada: $nombreCancionAgregada")
+            }
         }
 
         // Implementar Menú de Opciones en el ListView de Canciones
@@ -102,11 +118,22 @@ class VerCanciones : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.mi_EditarCancion -> {
-                // Acciones
+                irActividad(EditarCancion::class.java)
                 return true
             }
             R.id.mi_EliminarCancion -> {
-                // Acciones
+                // Eliminar la canción seleccionada
+                CancionCRUD().eliminarCancionById(idCancionSeleccionada)
+
+                // Actualizar la lista de canciones y el adaptador
+                listaDeCanciones = CancionCRUD().getCancionesByAlbumId(album.id)
+                val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
+                val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
+                listViewCanciones.adapter = adaptadorCanciones
+
+                // Mostrar Snackbar
+                mostrarSnackbar("Canción Eliminada")
+
                 return true
             }
 
@@ -119,4 +146,19 @@ class VerCanciones : AppCompatActivity() {
         val intent = Intent(this, clase)
         startActivity(intent)
     }
+
+
+    fun irActividadConID(clase: Class<*>, albumId: Int) {
+        val intent = Intent(this, AgregarCancion::class.java)
+        intent.putExtra("ALBUM_ID", albumId)
+        startActivity(intent)
+    }
+
+    // SnackBar
+    private fun mostrarSnackbar(mensaje: String) {
+        val rootView = findViewById<View>(android.R.id.content)
+        Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
+    }
+
+
 }

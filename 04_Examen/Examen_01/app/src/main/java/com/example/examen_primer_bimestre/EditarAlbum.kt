@@ -70,6 +70,7 @@ class EditarAlbum : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun actualizarAlbum() {
         // Obtener nuevos valores de la interfaz de usuario
         val nuevoNombre = findViewById<TextInputEditText>(R.id.input_Editar_Nombre_Album).text.toString()

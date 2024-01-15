@@ -11,5 +11,15 @@ data class Cancion(
     var productor: String
 ) {
 
+    // Constructor secundario para simplificar la creación de instancias
+    constructor(
+        albumId: Int,
+        nombre: String,
+        duracion: Double,
+        artistaColaborador: String,
+        letra: Boolean,
+        escritor: String,
+        productor: String
+    ) : this(0, albumId, nombre, duracion, artistaColaborador, letra, escritor, productor)
 
 }

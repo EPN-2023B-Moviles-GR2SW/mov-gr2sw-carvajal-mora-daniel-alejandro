@@ -66,6 +66,32 @@ class BaseDeDatos {
                     "Rick Rubin"
                 )
             )
+
+            bibliotecaCanciones.add(
+                Cancion(
+                    3,
+                    1,
+                    "Otherside",
+                    4.15,
+                    "No",
+                    false,
+                    "Flea",
+                    "Rick Rubin"
+                )
+            )
+
+            bibliotecaCanciones.add(
+                Cancion(
+                    4,
+                    2,
+                    "Heart-Shaped Box",
+                    4.41,
+                    "Dave Grohl",
+                    true,
+                    "Kurt Cobain",
+                    "Tainy"
+                )
+            )
         }
     }
 }

@@ -47,26 +47,14 @@
 
     <ListView
         android:id="@+id/lv_Listado_Canciones"
-        android:layout_width="312dp"
-        android:layout_height="377dp"
+        android:layout_width="323dp"
+        android:layout_height="364dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_Agregar_Canciones"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Nombre_Album"
-        app:layout_constraintVertical_bias="0.641" />
-
-    <TextView
-        android:id="@+id/txt_Nombre_Album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="28dp"
-        android:text="Nombre del Álbum:"
-        android:textColor="#4CAF50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Listado_Canciones" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_Inserte_Nombre"
+        app:layout_constraintVertical_bias="0.839" />
 
     <TextView
         android:id="@+id/txt_Inserte_Nombre"
@@ -74,10 +62,21 @@
         android:layout_height="19dp"
         android:layout_marginTop="28dp"
         android:text="TextView"
-        android:textAlignment="textStart"
+        android:textAlignment="textEnd"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.218"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toEndOf="@+id/txt_Nombre_Album"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Listado_Canciones" />
+
+    <TextView
+        android:id="@+id/txt_Nombre_Album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:text="Nombre del Álbum:"
+        android:textColor="#4CAF50"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_Listado_Canciones" />
 </androidx.constraintlayout.widget.ConstraintLayout>
