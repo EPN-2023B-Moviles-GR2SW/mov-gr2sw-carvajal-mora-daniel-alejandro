@@ -63,7 +63,7 @@ class BaseDeDatos {
                     "No",
                     true,
                     "Kurt Cobain",
-                    "Rick Rubin"
+                    "Steve Albini"
                 )
             )
 
@@ -89,7 +89,7 @@ class BaseDeDatos {
                     "Dave Grohl",
                     true,
                     "Kurt Cobain",
-                    "Tainy"
+                    "Steve Albini"
                 )
             )
         }

@@ -1,6 +1,7 @@
 package com.example.examen_primer_bimestre
 
 import CancionAdapter
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class VerCanciones : AppCompatActivity() {
 
+
     lateinit var album: Album
     lateinit var listaDeCanciones: List<Cancion>
 
@@ -29,6 +31,11 @@ class VerCanciones : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ver_canciones)
+
+
+        // Obtener el ID del álbum desde el Intent
+        val albumId = intent.getIntExtra("ALBUM_ID", -1)
+
 
         // Funcionalidad Botones
         val botonRegresarHomeCanciones = findViewById<Button>(R.id.btn_Regresar_Canciones)
@@ -42,9 +49,6 @@ class VerCanciones : AppCompatActivity() {
             irActividadConID(AgregarCancion::class.java, albumId)
         }
 
-
-        // Obtener el ID del álbum desde el Intent
-        val albumId =  intent.getIntExtra("ALBUM_ID", -1)
 
         // Verificar si se dio un ID Válido
         if (albumId != -1){
@@ -81,10 +85,13 @@ class VerCanciones : AppCompatActivity() {
         listViewCanciones.setOnItemClickListener { _, _, position, _ ->
             // Aquí solo necesitas obtener la canción directamente del adaptador
             val cancionSeleccionada = listaDeCanciones[position]
-            openContextMenu(listViewCanciones)
+
         }
 
+
+
     }
+
 
     // Crear Menú de Opciones para Canciones
     override fun onCreateContextMenu(
@@ -104,7 +111,6 @@ class VerCanciones : AppCompatActivity() {
         // Puedes almacenar el ID de la canción seleccionada si es necesario
         val idCancionSeleccionada = cancionSeleccionada.id
 
-
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -113,13 +119,16 @@ class VerCanciones : AppCompatActivity() {
 
         // Obtener la canción seleccionada desde el adaptador
         val cancionSeleccionada = listaDeCanciones[position]
-        // Almacena el ID de la canción seleccionada si es necesario
+        // Almacenar el ID de la canción seleccionada si es necesario
         val idCancionSeleccionada = cancionSeleccionada.id
+        // Almacenar el ID del álbum asociado a la canción
+        val idAlbumAsociado = cancionSeleccionada.albumId
 
         when (item.itemId) {
             R.id.mi_EditarCancion -> {
-                irActividad(EditarCancion::class.java)
+                irActividadConIDs(EditarCancion::class.java, idAlbumAsociado, idCancionSeleccionada)
                 return true
+
             }
             R.id.mi_EliminarCancion -> {
                 // Eliminar la canción seleccionada
@@ -133,13 +142,16 @@ class VerCanciones : AppCompatActivity() {
 
                 // Mostrar Snackbar
                 mostrarSnackbar("Canción Eliminada")
-
                 return true
             }
 
             else -> return super.onContextItemSelected(item)
         }
+
     }
+
+
+
 
     // Funcion
     fun irActividad(clase: Class<*>) {
@@ -149,10 +161,19 @@ class VerCanciones : AppCompatActivity() {
 
 
     fun irActividadConID(clase: Class<*>, albumId: Int) {
-        val intent = Intent(this, AgregarCancion::class.java)
+        val intent = Intent(this, clase)
         intent.putExtra("ALBUM_ID", albumId)
         startActivity(intent)
     }
+
+    // Funcion para ir a la actividad con ambos IDs
+    fun irActividadConIDs(clase: Class<*>, idAlbum: Int, idCancion: Int) {
+        val intent = Intent(this, clase)
+        intent.putExtra("ALBUM_ID", idAlbum)
+        intent.putExtra("CANCION_ID", idCancion)
+        startActivity(intent)
+    }
+
 
     // SnackBar
     private fun mostrarSnackbar(mensaje: String) {
