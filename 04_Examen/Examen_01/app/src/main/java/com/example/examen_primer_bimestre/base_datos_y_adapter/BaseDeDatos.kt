@@ -1,4 +1,4 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.base_datos_y_adapter
 
 import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.modelo.Cancion

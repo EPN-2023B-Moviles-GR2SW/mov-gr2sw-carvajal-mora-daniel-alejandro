@@ -1,6 +1,6 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.vistas
 
-import AlbumAdapter
+import com.example.examen_primer_bimestre.base_datos_y_adapter.AlbumAdapter
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,8 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ListView
 import androidx.activity.ComponentActivity
+import com.example.examen_primer_bimestre.base_datos_y_adapter.BaseDeDatos
+import com.example.examen_primer_bimestre.R
 import com.example.examen_primer_bimestre.operacionesCRUD.AlbumCRUD
 import com.google.android.material.snackbar.Snackbar
 
@@ -47,7 +49,7 @@ class MainActivity : ComponentActivity() {
         adaptador = AlbumAdapter(this, listadoDeAlbumes)
         listViewAlbumes.adapter = adaptador
 
-        // Verifica si hay un extra en el Intent
+        // Verificar si hay un extra en el Intent
         if (intent.hasExtra("NOMBRE_ALBUM_AGREGADO")) {
             val nombreAlbumAgregado = intent.getStringExtra("NOMBRE_ALBUM_AGREGADO")
             // Muestra el Snackbar
@@ -57,18 +59,17 @@ class MainActivity : ComponentActivity() {
         // Implementar Menú de Opciones en el ListView
         registerForContextMenu(listViewAlbumes)
         listViewAlbumes.setOnItemClickListener { _, _, position, _ ->
-            // Aquí solo necesitas obtener el álbum directamente del adaptador
+            // Obtener el álbum directamente del adaptador
             val albumSeleccionado = adaptador.getItem(position)
 
         }
 
-        // Verifica si hay un extra en el Intent
+        // Verificar si hay un extra en el Intent
         if (intent.hasExtra("ALBUM_ACTUALIZADO")) {
             val nombreAlbumActualizado = intent.getStringExtra("ALBUM_ACTUALIZADO")
             // Muestra el Snackbar
             mostrarSnackbarAlbumActualizado(nombreAlbumActualizado)
         }
-
 
 
     }
@@ -131,6 +132,8 @@ class MainActivity : ComponentActivity() {
         val intent = Intent(this, clase)
         startActivity(intent)
     }
+
+    // Dialogo
 
     private fun abrirDialogoEliminar() {
         val builder = AlertDialog.Builder(this)

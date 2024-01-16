@@ -1,6 +1,6 @@
 package com.example.examen_primer_bimestre.operacionesCRUD
 
-import com.example.examen_primer_bimestre.BaseDeDatos
+import com.example.examen_primer_bimestre.base_datos_y_adapter.BaseDeDatos
 import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.modelo.Cancion
 
@@ -11,12 +11,10 @@ class CancionCRUD {
     // Operacion CREATE para crear una nueva Cancion
     fun create(cancion: Cancion) {
         val listaCanciones = getAllCanciones()
-        // Asignar el ID automáticamente
         cancion.id = obtenerNuevoId()
-        // Agregar la canción a la lista
         listaCanciones.add(cancion)
 
-        // También podrías considerar actualizar la lista de canciones asociadas al álbum
+        // También se puede considerar actualizar la lista de canciones asociadas al álbum
         val listaAlbumes = getAllAlbumes()
         val album = listaAlbumes.find { it.id == cancion.albumId }
         album?.canciones?.add(cancion)
@@ -24,7 +22,6 @@ class CancionCRUD {
 
     // Función auxiliar para obtener un nuevo ID
     private fun obtenerNuevoId(): Int {
-        // Lógica para generar un nuevo ID, puedes adaptarla según tus necesidades
         return getAllCanciones().maxByOrNull { it.id }?.id?.plus(1) ?: 1
     }
 
@@ -69,16 +66,13 @@ class CancionCRUD {
         val cancion = getById(id)
 
         if (cancion != null) {
-            // Eliminar la canción de la lista
             listaCanciones.remove(cancion)
 
-            // Eliminar la referencia de la canción en los álbumes
             val listaDeAlbumes = getAllAlbumes()
             listaDeAlbumes.forEach { album ->
                 album.canciones.remove(cancion)
             }
         }
     }
-
 
 }

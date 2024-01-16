@@ -1,6 +1,6 @@
 package com.example.examen_primer_bimestre.operacionesCRUD
 
-import com.example.examen_primer_bimestre.BaseDeDatos
+import com.example.examen_primer_bimestre.base_datos_y_adapter.BaseDeDatos
 import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.modelo.Cancion
 
@@ -48,13 +48,9 @@ class AlbumCRUD {
         val album = getById(id)
 
         album?.let {
-            // Verificar que la lista de canciones no sea nula
             it.canciones?.let { cancionesDelAlbum ->
-                // Eliminar la referencia del álbum en las canciones
                 getAllCanciones().removeAll(cancionesDelAlbum)
             }
-
-            // Eliminar el álbum de la lista
             listaAlbumes.remove(it)
         }
     }

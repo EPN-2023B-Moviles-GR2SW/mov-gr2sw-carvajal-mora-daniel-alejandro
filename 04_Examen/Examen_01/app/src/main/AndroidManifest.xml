@@ -13,22 +13,22 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name=".EditarCancion"
+            android:name=".vistas.EditarCancion"
             android:exported="false" />
         <activity
-            android:name=".AgregarCancion"
+            android:name=".vistas.AgregarCancion"
             android:exported="false" />
         <activity
-            android:name=".EditarAlbum"
+            android:name=".vistas.EditarAlbum"
             android:exported="false" />
         <activity
-            android:name=".VerCanciones"
+            android:name=".vistas.VerCanciones"
             android:exported="false" />
         <activity
-            android:name=".AgregarAlbum"
+            android:name=".vistas.AgregarAlbum"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".vistas.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.vistas
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
+import com.example.examen_primer_bimestre.R
 import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.operacionesCRUD.AlbumCRUD
 import com.google.android.material.snackbar.Snackbar
@@ -47,16 +48,15 @@ class EditarAlbum : AppCompatActivity() {
         } else {
             // Manejar el caso en el que no se proporcionó un ID válido
             Toast.makeText(this, "No se proporcionó un ID de álbum válido", Toast.LENGTH_SHORT).show()
-            finish() // Cerrar la actividad si no hay ID válido
+            finish()
         }
 
     }
 
     // Funciones
 
-
     fun cargarDatosDelAlbum(albumId: Int) {
-        // Obtener el álbum de la base de datos o donde almacenes tus álbumes
+        // Obtener el álbum de la base de datos o donde se almacene el Álbum
         val albumAEditar = AlbumCRUD().getById(albumId)
 
         // Llenar la interfaz con los datos actuales del álbum

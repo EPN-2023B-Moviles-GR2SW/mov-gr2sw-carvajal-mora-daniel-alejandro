@@ -40,7 +40,7 @@ data class Album(
     )
 
     companion object {
-        private var contadorIds = 3 // Inicializar en 1
+        private var contadorIds = 3 // Inicializar en 3
 
         // Función para generar un nuevo id incremental
         private fun generarNuevoId(): Int {

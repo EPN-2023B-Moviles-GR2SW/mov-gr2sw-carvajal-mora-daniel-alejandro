@@ -1,19 +1,15 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.vistas
 
-import CancionAdapter
-import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Switch
+import com.example.examen_primer_bimestre.R
 import com.example.examen_primer_bimestre.modelo.Cancion
-import com.example.examen_primer_bimestre.operacionesCRUD.AlbumCRUD
 import com.example.examen_primer_bimestre.operacionesCRUD.CancionCRUD
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 
 
@@ -62,7 +58,7 @@ class AgregarCancion : AppCompatActivity() {
         if (nombreCancion.isBlank() || duracionCancionText.isBlank() || escritorCancion.isBlank() || productorCancion.isBlank()) {
             // Mostrar mensaje de error en un Snackbar
             mostrarSnackbarError("Completa todos los campos.")
-            return // Salir de la función si hay campos vacíos
+            return
         }
 
         // Convertir la duración a Double si la cadena no está vacía
@@ -72,12 +68,12 @@ class AgregarCancion : AppCompatActivity() {
             } catch (e: NumberFormatException) {
                 // Manejar la excepción, por ejemplo, mostrando un mensaje al usuario
                 mostrarSnackbarError("La duración debe ser un número válido.")
-                return // Salir de la función si la duración no es válida
+                return
             }
         } else {
             // Manejar el caso en que la cadena de duración es vacía
             mostrarSnackbarError("Ingresa una duración válida.")
-            return // Salir de la función si la duración es vacía
+            return
         }
 
         // Crear una nueva instancia de la Cancion

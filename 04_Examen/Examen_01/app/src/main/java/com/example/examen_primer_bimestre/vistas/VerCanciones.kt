@@ -1,20 +1,17 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.vistas
 
-import CancionAdapter
-import android.app.Activity
+import com.example.examen_primer_bimestre.base_datos_y_adapter.CancionAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import com.example.examen_primer_bimestre.R
 import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.modelo.Cancion
 import com.example.examen_primer_bimestre.operacionesCRUD.AlbumCRUD
@@ -58,7 +55,7 @@ class VerCanciones : AppCompatActivity() {
             // Obtener la lista de canciones asociadas al álbum
             listaDeCanciones = CancionCRUD().getCancionesByAlbumId(albumId)
 
-            // Mostrar el nombre del álbum en txt_Inserte_Nombre
+            // Mostrar el nombre del álbum
             val nombreAlbumTextView = findViewById<TextView>(R.id.txt_Inserte_Nombre)
             nombreAlbumTextView.text = album.nombre
 
@@ -83,12 +80,10 @@ class VerCanciones : AppCompatActivity() {
         registerForContextMenu(listViewCanciones)
 
         listViewCanciones.setOnItemClickListener { _, _, position, _ ->
-            // Aquí solo necesitas obtener la canción directamente del adaptador
+            // obtener la canción directamente del adaptador
             val cancionSeleccionada = listaDeCanciones[position]
 
         }
-
-
 
     }
 
@@ -108,7 +103,7 @@ class VerCanciones : AppCompatActivity() {
 
         // Acceder a la canción en la posición seleccionada
         val cancionSeleccionada = listaDeCanciones[position]
-        // Puedes almacenar el ID de la canción seleccionada si es necesario
+        // Almacenar el ID de la canción seleccionada si es necesario
         val idCancionSeleccionada = cancionSeleccionada.id
 
     }
@@ -151,8 +146,6 @@ class VerCanciones : AppCompatActivity() {
     }
 
 
-
-
     // Funcion
     fun irActividad(clase: Class<*>) {
         val intent = Intent(this, clase)
@@ -174,12 +167,10 @@ class VerCanciones : AppCompatActivity() {
         startActivity(intent)
     }
 
-
     // SnackBar
     private fun mostrarSnackbar(mensaje: String) {
         val rootView = findViewById<View>(android.R.id.content)
         Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
     }
-
 
 }

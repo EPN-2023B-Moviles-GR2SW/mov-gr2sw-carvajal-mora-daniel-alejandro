@@ -11,7 +11,7 @@ data class Cancion(
     var productor: String
 ) {
 
-    // Constructor secundario para simplificar la creación de instancias
+    // Constructor para simplificar la creación de instancias
     constructor(
         albumId: Int,
         nombre: String,

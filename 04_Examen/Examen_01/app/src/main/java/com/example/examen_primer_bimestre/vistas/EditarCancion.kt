@@ -1,4 +1,4 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.vistas
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
+import com.example.examen_primer_bimestre.R
 import com.example.examen_primer_bimestre.modelo.Cancion
 import com.example.examen_primer_bimestre.operacionesCRUD.CancionCRUD
 import com.google.android.material.snackbar.Snackbar
@@ -76,7 +77,7 @@ class EditarCancion : AppCompatActivity() {
     }
 
     private fun cargarDatosDeLaCancion(albumId: Int, cancionId: Int) {
-        // Obtener la canción de la base de datos o donde almacenes tus canciones
+        // Obtener la canción de la base de datos o donde se almacena las canciones
         val cancionAEditar = CancionCRUD().getById(cancionId)
 
         // Llenar la interfaz con los datos actuales de la canción
@@ -129,6 +130,5 @@ class EditarCancion : AppCompatActivity() {
         val rootView: View = findViewById(android.R.id.content)
         Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
     }
-
 
 }

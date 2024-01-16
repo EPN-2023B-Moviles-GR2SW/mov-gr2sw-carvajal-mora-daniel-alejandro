@@ -1,4 +1,4 @@
-package com.example.examen_primer_bimestre
+package com.example.examen_primer_bimestre.vistas
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
+import com.example.examen_primer_bimestre.R
 import com.example.examen_primer_bimestre.modelo.Album
 import com.example.examen_primer_bimestre.operacionesCRUD.AlbumCRUD
 import com.google.android.material.snackbar.Snackbar
