@@ -1,4 +1,4 @@
-package com.example.a05_sqlite
+package com.example.sqlite
 
 import org.junit.Test
 

@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 
     // Aquí termina On Create
 
-        // Funcion
+    // Funcion
     fun abrirActividadConParametros(clase: Class<*>){
         val intentExplicito = Intent(this, clase)
         // Enviar Parametros (solamente variables primitivas)
@@ -93,9 +93,9 @@ class MainActivity : ComponentActivity() {
         callbackContenidoIntentExplicito.launch(intentExplicito)
     }
 
-        // Funcion
-        fun irActividad(clase: Class<*>){
-            val intent = Intent(this, clase)
-            startActivity(intent)
-        }
+    // Funcion
+    fun irActividad(clase: Class<*>){
+        val intent = Intent(this, clase)
+        startActivity(intent)
+    }
 }

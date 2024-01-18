@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">05_SQLite</string>
+    <string name="app_name">SQLite</string>
 
     <string name="saludo">Buenos Dias</string>
     <string-array name="string_array_opciones_dialogo">

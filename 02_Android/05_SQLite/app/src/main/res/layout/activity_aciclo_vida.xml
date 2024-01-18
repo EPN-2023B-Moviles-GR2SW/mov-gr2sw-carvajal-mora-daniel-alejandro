@@ -5,6 +5,4 @@
     android:id="@+id/cl_ciclo_vida"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ACicloVida">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".ACicloVida"/>
