@@ -21,8 +21,10 @@ class BListView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blist_view)
 
+        // Capturar el List View que se tiene en el recurso
         val listView = findViewById<ListView>(R.id.lv_list_view)
 
+        // Crear un adaptador
         val adaptador = ArrayAdapter(
             this,                           // Contexto
             android.R.layout.simple_list_item_1,   // Como se va a ver (XML)
@@ -33,16 +35,18 @@ class BListView : AppCompatActivity() {
         listView.adapter = adaptador
         adaptador.notifyDataSetChanged()
 
+        // Configuracion Boton Añadir
         val botonAnadirListView = findViewById<Button>(R.id.btn_anadir_list_view)
         botonAnadirListView.setOnClickListener {
             // Se escucha el click del Boton
             anadirEntrenador(adaptador)
         }
-        registerForContextMenu(listView)
+        registerForContextMenu(listView) // Registrar Menú Contextual
     }
 
+    // Funciones
     fun anadirEntrenador(adaptador: ArrayAdapter<BEntrenador>){
-        arreglo.add(BEntrenador(1, "Daniel", "Descripcion"))
+        arreglo.add(BEntrenador(1, "Daniel", "daniel@hotmail.com"))
 
         adaptador.notifyDataSetChanged()
     }
@@ -78,7 +82,7 @@ class BListView : AppCompatActivity() {
         }
     }
 
-    // Utilizar un Builder para poder construir un Dialogo
+    // Utilizar un Builder para poder construir un Dialogo para confirmar Eliminar
     fun abrirDialogo(){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Desea Eliminar")
@@ -108,8 +112,7 @@ class BListView : AppCompatActivity() {
     }
 
 
-
-
+    // Snackbar
     fun mostrarSnackbar(texto:String){
         val snack = Snackbar.make(findViewById(R.id.lv_list_view), texto, Snackbar.LENGTH_LONG)
         snack.show()
