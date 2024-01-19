@@ -58,7 +58,7 @@ class ESqliteHelperEntrenador(contexto: Context?, /* This */):
         // where ID = ?
         val parametrosConsultaDelete = arrayOf(id.toString())
         val resultadoEliminacion = conexionEscritura.delete(
-            "ENTRNEADOR",   // Nombre Tabla
+            "ENTRENADOR",   // Nombre Tabla
             "id=?",    // Consulta SQL
             parametrosConsultaDelete
         )
@@ -111,9 +111,9 @@ class ESqliteHelperEntrenador(contexto: Context?, /* This */):
         val arreglo = arrayListOf<BEntrenador>()
         if(existeUsuario){
             do{
-                val id = resultadoConsultaLectura.getInt(0)     // Indice 0
-                val nombre = resultadoConsultaLectura.getString(1)
-                val descripcion = resultadoConsultaLectura.getString(2)
+                val id = resultadoConsultaLectura.getInt(0)                 // Indice 0
+                val nombre = resultadoConsultaLectura.getString(1)          // Indice 1
+                val descripcion = resultadoConsultaLectura.getString(2)     // Indice 2
                 if (id != null){
                     // Llenar el arreglo con un nuevo BEntrenador
                     usuarioEncontrado.id = id
