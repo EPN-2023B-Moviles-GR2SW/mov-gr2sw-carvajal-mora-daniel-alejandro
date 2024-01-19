@@ -1,7 +1,5 @@
-package com.example.sqlite
+package com.example.recycler_view
 
-import android.annotation.SuppressLint
-import android.content.ClipDescription
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -45,7 +43,7 @@ class ESqliteHelperEntrenador(contexto: Context?, /* This */):
         valoresAGuardar.put("nombre", nombre)
         valoresAGuardar.put("descripcion", descripcion)
 
-                                                        // Nombre de la Tabla                   // Valores
+        // Nombre de la Tabla                   // Valores
         val resultadoaGuardar = basedatosEscritura.insert("ENTRENADOR", null, valoresAGuardar)
 
         basedatosEscritura.close()
@@ -93,7 +91,6 @@ class ESqliteHelperEntrenador(contexto: Context?, /* This */):
 
     // Logica de Consultas
 
-    @SuppressLint("SuspiciousIndentation")
     fun consultarEntrenadorPorID(id: Int): BEntrenador{
         val baseDatosLectura = readableDatabase     // Lectura
         val scriptConsultaLectura =
@@ -102,16 +99,16 @@ class ESqliteHelperEntrenador(contexto: Context?, /* This */):
             """.trimIndent()
         val parametrosConsultaLectura = arrayOf(id.toString())
         val resultadoConsultaLectura = baseDatosLectura.rawQuery(
-                scriptConsultaLectura,      // Consulta
-                parametrosConsultaLectura   // Parametros
+            scriptConsultaLectura,      // Consulta
+            parametrosConsultaLectura   // Parametros
         )
 
 
-    // Logica de Busqueda
+        // Logica de Busqueda
 
-    val existeUsuario = resultadoConsultaLectura.moveToFirst()
-    val usuarioEncontrado = BEntrenador(0,"","")
-    val arreglo = arrayListOf<BEntrenador>()
+        val existeUsuario = resultadoConsultaLectura.moveToFirst()
+        val usuarioEncontrado = BEntrenador(0,"","")
+        val arreglo = arrayListOf<BEntrenador>()
         if(existeUsuario){
             do{
                 val id = resultadoConsultaLectura.getInt(0)     // Indice 0

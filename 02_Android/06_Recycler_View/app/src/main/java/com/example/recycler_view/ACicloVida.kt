@@ -1,4 +1,4 @@
-package com.example.sqlite
+package com.example.recycler_view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
