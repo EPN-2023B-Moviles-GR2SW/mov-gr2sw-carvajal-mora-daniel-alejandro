@@ -12,6 +12,7 @@
         android:layout_height="54dp"
         android:layout_marginBottom="40dp"
         android:text="I. Explicito"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_ir_intent_implicito"
         app:layout_constraintEnd_toEndOf="@+id/btn_ir_intent_implicito"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,6 +24,7 @@
         android:layout_height="55dp"
         android:layout_marginBottom="64dp"
         android:text="I. Implicito"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_ir_list_view"
         app:layout_constraintEnd_toEndOf="@+id/btn_ir_list_view"
         app:layout_constraintHorizontal_bias="0.384"
@@ -34,7 +36,7 @@
         android:layout_height="49dp"
         android:layout_marginBottom="44dp"
         android:text="L. View"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_ciclo_vida"
         app:layout_constraintEnd_toEndOf="@+id/btn_ciclo_vida"
         app:layout_constraintHorizontal_bias="0.0"
@@ -46,7 +48,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="24dp"
         android:text="C. Vida"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.473"
@@ -60,15 +62,15 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.311"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.734" />
+        app:layout_constraintVertical_bias="0.741" />
 
     <Button
         android:id="@+id/btn_sqlite"
-        android:layout_width="87dp"
-        android:layout_height="54dp"
+        android:layout_width="102dp"
+        android:layout_height="52dp"
         android:layout_marginStart="36dp"
         android:text="SQLite"
         android:textSize="16sp"
@@ -79,10 +81,11 @@
 
     <Button
         android:id="@+id/btn_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="106dp"
+        android:layout_height="53dp"
         android:layout_marginBottom="44dp"
         android:text="R. View"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_sqlite"
         app:layout_constraintEnd_toEndOf="@+id/btn_sqlite"
         app:layout_constraintHorizontal_bias="0.0"
@@ -90,12 +93,13 @@
 
     <Button
         android:id="@+id/btn_google_maps"
-        android:layout_width="90dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="64dp"
+        android:layout_width="110dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="60dp"
         android:text="G. Maps"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_recycler_view"
         app:layout_constraintEnd_toEndOf="@+id/btn_recycler_view"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btn_recycler_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
