@@ -88,7 +88,7 @@ class AgregarCancion : AppCompatActivity() {
         )
 
         // Agregar la nueva canción a la base de datos
-        CancionCRUD().create(nuevaCancion)
+        CancionCRUD(this).crearCancion(nuevaCancion)
 
         // Regresar a la actividad de ver canciones del álbum
         val intent = Intent(this, VerCanciones::class.java)

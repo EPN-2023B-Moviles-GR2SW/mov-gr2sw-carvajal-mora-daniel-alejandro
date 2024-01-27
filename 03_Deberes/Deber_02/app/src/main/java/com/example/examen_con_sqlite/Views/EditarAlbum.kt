@@ -57,7 +57,7 @@ class EditarAlbum : AppCompatActivity() {
 
     fun cargarDatosDelAlbum(albumId: Int) {
         // Obtener el álbum de la base de datos o donde se almacene el Álbum
-        val albumAEditar = AlbumCRUD().getById(albumId)
+        val albumAEditar = AlbumCRUD(this).obtenerAlbumPorId(albumId)
 
         // Llenar la interfaz con los datos actuales del álbum
         albumAEditar?.let {
@@ -70,7 +70,6 @@ class EditarAlbum : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
     private fun actualizarAlbum() {
         // Obtener nuevos valores de la interfaz de usuario
         val nuevoNombre = findViewById<TextInputEditText>(R.id.input_Editar_Nombre_Album).text.toString()
@@ -98,7 +97,7 @@ class EditarAlbum : AppCompatActivity() {
             )
 
             // Actualizar el álbum utilizando AlbumCRUD
-            AlbumCRUD().updateAlbum(albumActualizado)
+            AlbumCRUD(this).updateAlbum(albumActualizado)
 
             //Regresar a Main Activity
             val intent = Intent(this, MainActivity::class.java)

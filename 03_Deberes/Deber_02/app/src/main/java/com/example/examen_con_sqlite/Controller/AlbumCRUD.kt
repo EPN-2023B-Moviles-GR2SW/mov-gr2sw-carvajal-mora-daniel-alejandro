@@ -141,5 +141,34 @@ class AlbumCRUD(context: Context) {
 
     // Funcion Auxiliar para obtener todas las Canciones del Album
 
+    fun obtenerCancionesPorAlbumId(albumId: Int): List<Cancion> {
+        val listaCanciones = mutableListOf<Cancion>()
+
+        dbHelper.readableDatabase.use { db ->
+            val query = "SELECT * FROM ${BaseDeDatosHelperCancion.TABLA_CANCION} WHERE albumId = ?"
+            val cursor = db.rawQuery(query, arrayOf(albumId.toString()))
+
+            cursor.use {
+                // Iterar sobre el cursor y construir la lista de canciones
+                if (it.moveToFirst()) {
+                    do {
+                        val id = it.getInt(it.getColumnIndexOrThrow("id"))
+                        val nombre = it.getString(it.getColumnIndexOrThrow("nombre"))
+                        val duracion = it.getDouble(it.getColumnIndexOrThrow("duracion"))
+                        val artistaColaborador = it.getString(it.getColumnIndexOrThrow("artistaColaborador"))
+                        val letra = it.getInt(it.getColumnIndexOrThrow("letra")) == 1
+                        val escritor = it.getString(it.getColumnIndexOrThrow("escritor"))
+                        val productor = it.getString(it.getColumnIndexOrThrow("productor"))
+
+                        // Crear una instancia de Cancion y agregarla a la lista
+                        val cancion = Cancion(id, albumId, nombre, duracion, artistaColaborador, letra, escritor, productor)
+                        listaCanciones.add(cancion)
+                    } while (it.moveToNext())
+                }
+            }
+        }
+
+        return listaCanciones
+    }
 
 }

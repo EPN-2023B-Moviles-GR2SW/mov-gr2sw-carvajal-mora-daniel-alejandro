@@ -50,10 +50,10 @@ class VerCanciones : AppCompatActivity() {
         // Verificar si se dio un ID Válido
         if (albumId != -1){
             // Obtener el álbum correspondiente desde la base de datos
-            album = AlbumCRUD().getById(albumId) ?: Album()
+            album = AlbumCRUD(this).obtenerAlbumPorId(albumId) ?: Album()
 
             // Obtener la lista de canciones asociadas al álbum
-            listaDeCanciones = CancionCRUD().getCancionesByAlbumId(albumId)
+            listaDeCanciones = CancionCRUD(this).obtenerCancionesPorAlbumId(albumId)
 
             // Mostrar el nombre del álbum
             val nombreAlbumTextView = findViewById<TextView>(R.id.txt_Inserte_Nombre)
@@ -127,10 +127,10 @@ class VerCanciones : AppCompatActivity() {
             }
             R.id.mi_EliminarCancion -> {
                 // Eliminar la canción seleccionada
-                CancionCRUD().eliminarCancionById(idCancionSeleccionada)
+                CancionCRUD(this).eliminarCancionPorId(idCancionSeleccionada)
 
                 // Actualizar la lista de canciones y el adaptador
-                listaDeCanciones = CancionCRUD().getCancionesByAlbumId(album.id)
+                listaDeCanciones = CancionCRUD(this).obtenerCancionesPorAlbumId(album.id)
                 val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
                 val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
                 listViewCanciones.adapter = adaptadorCanciones

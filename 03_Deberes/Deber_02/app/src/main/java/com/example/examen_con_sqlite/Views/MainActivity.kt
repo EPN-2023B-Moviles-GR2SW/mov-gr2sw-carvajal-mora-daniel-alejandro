@@ -13,6 +13,7 @@ import androidx.activity.ComponentActivity
 import com.example.examen_con_sqlite.Controller.AlbumAdapter
 import com.example.examen_con_sqlite.Controller.AlbumCRUD
 import com.example.examen_con_sqlite.Database.BaseDeDatos
+import com.example.examen_con_sqlite.Model.Album
 import com.example.examen_con_sqlite.R
 import com.example.examen_con_sqlite.ui.theme.Examen_con_SQLiteTheme
 import com.google.android.material.snackbar.Snackbar
@@ -21,7 +22,6 @@ class MainActivity : ComponentActivity() {
 
     var posAlbumSeleccionado = 0
     var idAlbumSeleccionado = 0
-    val listadoDeAlbumes = AlbumCRUD().obtenerTodos()
     lateinit var adaptador: AlbumAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +40,14 @@ class MainActivity : ComponentActivity() {
         val listViewAlbumes = findViewById<ListView>(R.id.lv_albumes_almacenados)
 
         // Implementar Menú de Opciones en el ListView
-        registerForContextMenu(listViewAlbumes)
-        listViewAlbumes.setOnItemClickListener { _, _, position, _ -> val albumSeleccionado = BaseDeDatos.bibliotecaAlbumes[position]
+        listViewAlbumes.setOnItemClickListener { _, _, position, _ ->
+            // Obtener el álbum directamente del adaptador
+            val albumSeleccionado = adaptador.getItem(position)
             openContextMenu(listViewAlbumes)
         }
 
         // Crear el Adapter
-
+        val listadoDeAlbumes = AlbumCRUD(this).obtenerTodos()
         adaptador = AlbumAdapter(this, listadoDeAlbumes)
         listViewAlbumes.adapter = adaptador
 
@@ -142,7 +143,7 @@ class MainActivity : ComponentActivity() {
         builder.setPositiveButton("Eliminar") { dialog, which ->
             if (idAlbumSeleccionado != -1) {
                 // Llamada a la función para eliminar el álbum por ID
-                AlbumCRUD().eliminarAlbumById(idAlbumSeleccionado)
+                AlbumCRUD(this).borrarAlbumPorId(idAlbumSeleccionado)
                 // Notificar al Adapter que los datos han cambiado
                 adaptador.notifyDataSetChanged()
                 // Muestra el Snackbar

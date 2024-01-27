@@ -21,8 +21,6 @@ class EditarCancion : AppCompatActivity() {
     private var albumId: Int = -1
     private var cancionId: Int = -1
 
-
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_cancion)
@@ -77,7 +75,7 @@ class EditarCancion : AppCompatActivity() {
 
     private fun cargarDatosDeLaCancion(albumId: Int, cancionId: Int) {
         // Obtener la canción de la base de datos o donde se almacena las canciones
-        val cancionAEditar = CancionCRUD().getById(cancionId)
+        val cancionAEditar = CancionCRUD(this).obtenerCancionPorId(cancionId)
 
         // Llenar la interfaz con los datos actuales de la canción
         cancionAEditar?.let {
@@ -115,7 +113,7 @@ class EditarCancion : AppCompatActivity() {
                 productor = nuevoProductor
             )
             // Actualizar la canción utilizando CancionCRUD
-            CancionCRUD().updateCancion(cancionActualizada)
+            CancionCRUD(this).actualizarCancion(cancionActualizada)
 
             // Regresar a VerCanciones
             irActividadConIDs(VerCanciones::class.java, albumId, cancionId)
