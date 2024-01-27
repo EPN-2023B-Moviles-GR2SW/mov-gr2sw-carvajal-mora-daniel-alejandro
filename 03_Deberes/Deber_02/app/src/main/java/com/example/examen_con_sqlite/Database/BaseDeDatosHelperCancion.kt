@@ -1,11 +1,10 @@
 package com.example.examen_con_sqlite.Database
 
-import android.content.ContentValues
+
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.examen_con_sqlite.Model.Album
-import com.example.examen_con_sqlite.Model.Cancion
+
 
 class BaseDeDatosHelperCancion(context: Context): SQLiteOpenHelper(context, DATABASE_NOMBRE, null, DATABASE_VERSION) {
 

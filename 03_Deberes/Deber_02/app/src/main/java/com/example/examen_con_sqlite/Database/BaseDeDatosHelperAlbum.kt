@@ -1,13 +1,10 @@
 package com.example.examen_con_sqlite.Database
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.examen_con_sqlite.Model.Album
 
-class BaseDeDatosHelperAlbum(context: Context):
-    SQLiteOpenHelper(context, DATABASE_NOMBRE, null, DATABASE_VERSION) {
+class BaseDeDatosHelperAlbum(context: Context): SQLiteOpenHelper(context, DATABASE_NOMBRE, null, DATABASE_VERSION) {
 
     companion object{
         const val DATABASE_NOMBRE = "biblioteca_musical"

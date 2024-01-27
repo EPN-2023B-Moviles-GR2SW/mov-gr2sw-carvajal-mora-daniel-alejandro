@@ -63,8 +63,7 @@ class VerCanciones : AppCompatActivity() {
             val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
             val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
             listViewCanciones.adapter = adaptadorCanciones
-
-
+            
             // Obtener el nombre de la canción agregada de los extras del Intent
             val nombreCancionAgregada = intent.getStringExtra("NOMBRE_CANCION_AGREGADA")
 
