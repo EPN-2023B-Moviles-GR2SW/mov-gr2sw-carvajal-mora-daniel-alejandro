@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.examen_con_sqlite.Model.Album
 
-class AlbumAdapter(context: Context, albums: List<Album>) : ArrayAdapter<Album>(context, 0, albums) {
+class AlbumAdapter(context: Context, val albums: MutableList<Album>) : ArrayAdapter<Album>(context, 0, albums) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
@@ -25,4 +25,12 @@ class AlbumAdapter(context: Context, albums: List<Album>) : ArrayAdapter<Album>(
 
         return listItemView!!
     }
+
+    // Función para actualizar la lista de álbumes
+    fun actualizarLista(nuevaLista: List<Album>) {
+        albums.clear()
+        albums.addAll(nuevaLista)
+        notifyDataSetChanged()
+    }
+
 }

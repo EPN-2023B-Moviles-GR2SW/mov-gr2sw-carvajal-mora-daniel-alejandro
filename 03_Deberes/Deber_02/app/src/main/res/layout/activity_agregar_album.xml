@@ -22,7 +22,7 @@
         android:layout_width="150dp"
         android:layout_height="51dp"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="#F44336"
         android:text="Regresar"
         android:textColor="#FFFFFF"
@@ -32,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_Crear_Album"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.162" />
 
     <Button
         android:id="@+id/btn_Crear_Album"
@@ -44,11 +44,11 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/input_Genero_Album"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/input_Genero_Album"
         app:layout_constraintTop_toBottomOf="@+id/sw_Explicito_Album"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.608" />
 
     <TextView
         android:id="@+id/textView2"

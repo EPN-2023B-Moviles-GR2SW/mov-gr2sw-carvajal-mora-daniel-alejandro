@@ -13,6 +13,7 @@ import androidx.activity.ComponentActivity
 import com.example.examen_con_sqlite.Controller.AlbumAdapter
 import com.example.examen_con_sqlite.Controller.AlbumCRUD
 import com.example.examen_con_sqlite.Database.BaseDeDatos
+import com.example.examen_con_sqlite.Database.BaseDeDatosHelper
 import com.example.examen_con_sqlite.Model.Album
 import com.example.examen_con_sqlite.R
 import com.example.examen_con_sqlite.ui.theme.Examen_con_SQLiteTheme
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
         // Crear el Adapter
         val listadoDeAlbumes = AlbumCRUD(this).obtenerTodos()
-        adaptador = AlbumAdapter(this, listadoDeAlbumes)
+        adaptador = AlbumAdapter(this, listadoDeAlbumes.toMutableList())
         listViewAlbumes.adapter = adaptador
 
         // Verificar si hay un extra en el Intent
@@ -144,6 +145,8 @@ class MainActivity : ComponentActivity() {
             if (idAlbumSeleccionado != -1) {
                 // Llamada a la función para eliminar el álbum por ID
                 AlbumCRUD(this).borrarAlbumPorId(idAlbumSeleccionado)
+                // Actualizar la lista de álbumes en el adaptador
+                adaptador.actualizarLista(AlbumCRUD(this).obtenerTodos())
                 // Notificar al Adapter que los datos han cambiado
                 adaptador.notifyDataSetChanged()
                 // Muestra el Snackbar

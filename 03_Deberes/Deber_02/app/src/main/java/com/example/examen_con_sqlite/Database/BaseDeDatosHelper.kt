@@ -3,13 +3,16 @@ package com.example.examen_con_sqlite.Database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
-class BaseDeDatosHelperAlbum(context: Context): SQLiteOpenHelper(context, DATABASE_NOMBRE, null, DATABASE_VERSION) {
+class BaseDeDatosHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NOMBRE, null, DATABASE_VERSION) {
 
     companion object{
         const val DATABASE_NOMBRE = "biblioteca_musical"
         const val DATABASE_VERSION = 1
-        const val TABLA_ALBUM = "Album"
+        const val TABLA_ALBUM = "album"
+        const val TABLA_CANCION = "cancion"
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -36,7 +39,7 @@ class BaseDeDatosHelperAlbum(context: Context): SQLiteOpenHelper(context, DATABA
 
         val scriptSQLCrearTablaCancion =
             """
-                CREATE TABLE ${BaseDeDatosHelperCancion.TABLA_CANCION}( 
+                CREATE TABLE ${TABLA_CANCION}( 
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     albumId INTEGER,
                     nombre TEXT,
@@ -45,7 +48,7 @@ class BaseDeDatosHelperAlbum(context: Context): SQLiteOpenHelper(context, DATABA
                     letra BIT,
                     escritor TEXT,
                     productor TEXT,
-                    FOREIGN KEY(albumId) REFERENCES Album(id)
+                    FOREIGN KEY(albumId) REFERENCES $TABLA_ALBUM(id)
                     
                 )
             """.trimIndent()

@@ -1,16 +1,13 @@
 package com.example.examen_con_sqlite.Controller
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import com.example.examen_con_sqlite.Database.BaseDeDatos
-import com.example.examen_con_sqlite.Database.BaseDeDatosHelperCancion
-import com.example.examen_con_sqlite.Model.Album
+import com.example.examen_con_sqlite.Database.BaseDeDatosHelper
 import com.example.examen_con_sqlite.Model.Cancion
 
 class CancionCRUD(context: Context) {
 
-    private val dbHelper: BaseDeDatosHelperCancion = BaseDeDatosHelperCancion(context)
+    private val dbHelper: BaseDeDatosHelper = BaseDeDatosHelper(context)
 
     // Operaciones CRUD para trabajar con Cancion en la Base de Datos
 
@@ -31,7 +28,7 @@ class CancionCRUD(context: Context) {
         }
 
         // Insertar la nueva canción y obtener su ID
-        val nuevoId = db.insert(BaseDeDatosHelperCancion.TABLA_CANCION, null, values)
+        val nuevoId = db.insert(BaseDeDatosHelper.TABLA_CANCION, null, values)
 
         // Asignar el nuevo ID a la canción
         cancion.id = nuevoId.toInt()
@@ -46,7 +43,7 @@ class CancionCRUD(context: Context) {
         val listaCanciones = mutableListOf<Cancion>()
         val db = dbHelper.readableDatabase
 
-        val query = "SELECT * FROM ${BaseDeDatosHelperCancion.TABLA_CANCION} WHERE albumId = ?"
+        val query = "SELECT * FROM ${BaseDeDatosHelper.TABLA_CANCION} WHERE albumId = ?"
         val selectionArgs = arrayOf(albumId.toString())
 
         val cursor = db.rawQuery(query, selectionArgs)
@@ -85,7 +82,7 @@ class CancionCRUD(context: Context) {
         val listaCanciones = mutableListOf<Cancion>()
 
         dbHelper.readableDatabase.use { db ->
-            val query = "SELECT * FROM ${BaseDeDatosHelperCancion.TABLA_CANCION}"
+            val query = "SELECT * FROM ${BaseDeDatosHelper.TABLA_CANCION}"
             val cursor = db.rawQuery(query, null)
 
             cursor.use {
@@ -118,7 +115,7 @@ class CancionCRUD(context: Context) {
         var cancion: Cancion? = null
 
         dbHelper.readableDatabase.use { db ->
-            val query = "SELECT * FROM ${BaseDeDatosHelperCancion.TABLA_CANCION} WHERE id = ?"
+            val query = "SELECT * FROM ${BaseDeDatosHelper.TABLA_CANCION} WHERE id = ?"
             val selectionArgs = arrayOf(cancionId.toString())
             val cursor = db.rawQuery(query, selectionArgs)
 
@@ -161,7 +158,7 @@ class CancionCRUD(context: Context) {
             val whereArgs = arrayOf(cancionActualizada.id.toString())
 
             // Actualizar la canción en la base de datos
-            db.update(BaseDeDatosHelperCancion.TABLA_CANCION, values, whereClause, whereArgs)
+            db.update(BaseDeDatosHelper.TABLA_CANCION, values, whereClause, whereArgs)
         }
     }
 
@@ -174,7 +171,7 @@ class CancionCRUD(context: Context) {
             val whereArgs = arrayOf(idCancion.toString())
 
             // Eliminar la canción de la base de datos
-            db.delete(BaseDeDatosHelperCancion.TABLA_CANCION, whereClause, whereArgs)
+            db.delete(BaseDeDatosHelper.TABLA_CANCION, whereClause, whereArgs)
         }
     }
 
