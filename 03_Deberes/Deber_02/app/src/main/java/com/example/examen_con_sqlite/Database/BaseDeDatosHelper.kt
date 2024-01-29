@@ -32,7 +32,24 @@ class BaseDeDatosHelperAlbum(context: Context): SQLiteOpenHelper(context, DATABA
             """.trimIndent()
         db?.execSQL(scriptSQLCrearTablaAlbum)
 
+        // Creacion de la tabla Cancion
 
+        val scriptSQLCrearTablaCancion =
+            """
+                CREATE TABLE ${BaseDeDatosHelperCancion.TABLA_CANCION}( 
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    albumId INTEGER,
+                    nombre TEXT,
+                    duracion REAL,
+                    artistaColaborador TEXT,
+                    letra BIT,
+                    escritor TEXT,
+                    productor TEXT,
+                    FOREIGN KEY(albumId) REFERENCES Album(id)
+                    
+                )
+            """.trimIndent()
+        db?.execSQL(scriptSQLCrearTablaCancion)
 
     }
 
