@@ -113,4 +113,15 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <Button
+        android:id="@+id/btn_intent_firestore"
+        android:layout_width="101dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="84dp"
+        android:text="Firestore"
+        app:layout_constraintEnd_toEndOf="@+id/btn_sqlite"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_sqlite"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sqlite" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
