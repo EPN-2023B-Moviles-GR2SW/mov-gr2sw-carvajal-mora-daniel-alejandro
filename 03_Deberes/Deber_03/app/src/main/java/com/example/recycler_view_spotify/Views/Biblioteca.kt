@@ -1,12 +1,13 @@
-package com.example.recycler_view_spotify
+package com.example.recycler_view_spotify.Views
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recycler_view_spotify.Data.BaseDeDatos
+import com.example.recycler_view_spotify.R
+import com.example.recycler_view_spotify.RecylerViews.RecyclerViewAdaptadorAlbum
 
 class Biblioteca : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
