@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019270404474",
+    "project_id": "examen-segundo-bimestre",
+    "storage_bucket": "examen-segundo-bimestre.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019270404474:android:c3f2fc0c5f547541dc9ec3",
+        "android_client_info": {
+          "package_name": "com.example.examen_segundo_bimestre"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYVKb5u12mN_1uovjC2dGaz2ydMSNbCaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
