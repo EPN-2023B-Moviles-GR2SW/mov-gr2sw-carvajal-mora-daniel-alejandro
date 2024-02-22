@@ -11,6 +11,9 @@ import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+
+
 
 class AgregarAlbum : AppCompatActivity() {
 
@@ -18,8 +21,10 @@ class AgregarAlbum : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agregar_album)
 
-        // Obtener referencias a los elementos de la interfaz
+        // Inicializar Firebase
+        FirebaseApp.initializeApp(this)
 
+        // Obtener referencias a los elementos de la interfaz
         val inputNombreAlbum = findViewById<EditText>(R.id.input_Nombre_Album)
         val inputArtistaAlbum = findViewById<EditText>(R.id.input_Artista_Album)
         val inputGeneroAlbum = findViewById<EditText>(R.id.input_Genero_Album)
@@ -27,14 +32,11 @@ class AgregarAlbum : AppCompatActivity() {
         val inputAnioAlbum = findViewById<EditText>(R.id.input_Anio_Album)
         val switchExplicitoAlbum = findViewById<Switch>(R.id.sw_Explicito_Album)
 
-
         // Funcionalidad Botones
-
         val botonRegresarHome = findViewById<Button>(R.id.btn_Regresar_Home)
-        botonRegresarHome.setOnClickListener{
+        botonRegresarHome.setOnClickListener {
             irActividad(MainActivity::class.java)
         }
-
 
         val botonCrearAlbum = findViewById<Button>(R.id.btn_Crear_Album)
         botonCrearAlbum.setOnClickListener {
@@ -46,42 +48,67 @@ class AgregarAlbum : AppCompatActivity() {
             val anioAlbum = inputAnioAlbum.text.toString().toIntOrNull() ?: 0
             val esExplicito = switchExplicitoAlbum.isChecked
 
-            // Validar que no haya campos vacíos
-            if (nombreAlbum.isBlank() || artistaAlbum.isBlank() || generoAlbum.isBlank()) {
-                // Mostrar mensaje de error en un Snackbar
-                mostrarSnackbarError("Completa todos los campos.")
-            } else {
-                // Crear un nuevo objeto Album
+            // Validar que se ingresen valores válidos
+            if (validarEntradas(nombreAlbum, artistaAlbum, anioAlbum, precioAlbum)) {
+                // Crear un objeto Album con los valores ingresados
                 val nuevoAlbum = Album(
-                    nombreAlbum,
-                    artistaAlbum,
-                    generoAlbum,
-                    precioAlbum,
-                    anioAlbum,
-                    esExplicito
+                    id = null,  // Puedes dejar el ID como null si el constructor lo permite
+                    anioLanzamiento = anioAlbum,
+                    artista = artistaAlbum,
+                    esExplicito = esExplicito,
+                    genero = generoAlbum,
+                    nombre = nombreAlbum,
+                    precio = precioAlbum
                 )
 
-                // Utilizar la función para agregar el nuevo álbum
-                AlbumCRUD(this).crearAlbum(nuevoAlbum)
-
-                // Regresa a Main Activity
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("NOMBRE_ALBUM_AGREGADO", nombreAlbum)
-                startActivity(intent)
+                // Llamada a la función para agregar el álbum
+                agregarAlbum(nuevoAlbum)
+            } else {
+                mostrarSnackbar("Por favor, ingrese valores válidos.")
             }
         }
     }
 
-
-    // Funcion
-    fun irActividad(clase: Class<*>){
-        val intent = Intent(this, clase)
-        startActivity(intent)
+    private fun validarEntradas(
+        nombreAlbum: String,
+        artistaAlbum: String,
+        anioAlbum: Int,
+        precioAlbum: Double
+    ): Boolean {
+        return nombreAlbum.isNotEmpty() && artistaAlbum.isNotEmpty() && anioAlbum > 0 && precioAlbum >= 0
     }
 
-    // SnackBar
-    private fun mostrarSnackbarError(mensaje: String) {
-        val rootView: View = findViewById(android.R.id.content)
+    private fun agregarAlbum(album: Album) {
+        AlbumCRUD(this).crearAlbum(album)
+            .addOnSuccessListener { documentReference ->
+                // Éxito al agregar el álbum
+                mostrarSnackbar("Álbum agregado exitosamente.")
+                // Devolver el ID del documento del álbum agregado a la actividad principal
+                devolverResultado(documentReference.id, album.nombre)
+            }
+            .addOnFailureListener { e ->
+                // Manejar el fallo si es necesario
+                e.printStackTrace()
+                mostrarSnackbar("Error al agregar el álbum.")
+            }
+    }
+
+    private fun devolverResultado(albumId: String, nombreAlbum: String) {
+        // Devolver el nombre del álbum a la actividad principal
+        val intent = Intent()
+        intent.putExtra("NOMBRE_ALBUM_AGREGADO", nombreAlbum)
+        intent.putExtra("ALBUM_ID_AGREGADO", albumId)
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
+    private fun mostrarSnackbar(mensaje: String) {
+        val rootView = findViewById<View>(android.R.id.content)
         Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun irActividad(clase: Class<*>) {
+        val intent = Intent(this, clase)
+        startActivity(intent)
     }
 }

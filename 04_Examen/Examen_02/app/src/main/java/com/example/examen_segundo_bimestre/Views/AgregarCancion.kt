@@ -1,23 +1,31 @@
 package com.example.examen_segundo_bimestre.Views
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Switch
+import androidx.appcompat.app.AppCompatActivity
 import com.example.examen_segundo_bimestre.Controller.CancionCRUD
 import com.example.examen_segundo_bimestre.Model.Cancion
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.FirebaseApp
 
 class AgregarCancion : AppCompatActivity() {
 
+    lateinit var albumId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agregar_cancion)
+
+        // Inicializar Firebase
+        FirebaseApp.initializeApp(this)
+
+        // Obtener el ID del álbum de los extras del Intent
+        albumId = intent.getStringExtra("ALBUM_ID") ?: ""
 
         // Funcionalidad Botones
         val botonRegresarListaCanciones = findViewById<Button>(R.id.btn_Regresar_Listado_Canciones)
@@ -30,9 +38,7 @@ class AgregarCancion : AppCompatActivity() {
         botonCrearCancion.setOnClickListener {
             crearNuevaCancion()
         }
-
     }
-
 
     // Funciones
     fun irActividad(clase: Class<*>, albumId: Int) {
@@ -41,7 +47,7 @@ class AgregarCancion : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun crearNuevaCancion() {
+    private fun crearNuevaCancion() {
         // Obtener datos ingresados por el Usuario
         val nombreCancion = findViewById<TextInputEditText>(R.id.input_Nombre_Cancion).text.toString()
         val duracionCancionText = findViewById<TextInputEditText>(R.id.input_Duracion_Cancion).text.toString()
@@ -49,9 +55,6 @@ class AgregarCancion : AppCompatActivity() {
         val escritorCancion = findViewById<TextInputEditText>(R.id.input_Escritor_Cancion).text.toString()
         val productorCancion = findViewById<TextInputEditText>(R.id.input_Productor_Cancion).text.toString()
         val colaboradorCancion = findViewById<TextInputEditText>(R.id.input_Colaborador_Cancion).text.toString()
-
-        // Obtener el ID del álbum desde el Intent
-        val albumId = intent.getIntExtra("ALBUM_ID", -1)
 
         // Validar que no haya campos vacíos
         if (nombreCancion.isBlank() || duracionCancionText.isBlank() || escritorCancion.isBlank() || productorCancion.isBlank()) {
@@ -76,34 +79,32 @@ class AgregarCancion : AppCompatActivity() {
         }
 
         // Crear una nueva instancia de la Cancion
-        val nuevaCancion = Cancion(
-            id = 0, // Este ID se asignará automáticamente en la base de datos
-            albumId = albumId,
-            nombre = nombreCancion,
-            duracion = duracionCancion,
-            artistaColaborador = colaboradorCancion,
-            letra = tieneLetra,
-            escritor = escritorCancion,
-            productor = productorCancion
-        )
+        val nuevaCancion = Cancion()
+        nuevaCancion.albumId = albumId
+        nuevaCancion.nombre = nombreCancion
+        nuevaCancion.duracion = duracionCancion
+        nuevaCancion.artistaColaborador = colaboradorCancion
+        nuevaCancion.letra = tieneLetra
+        nuevaCancion.escritor = escritorCancion
+        nuevaCancion.productor = productorCancion
 
-        // Agregar la nueva canción a la base de datos
-        CancionCRUD(this).crearCancion(nuevaCancion)
-
-        // Regresar a la actividad de ver canciones del álbum
-        val intent = Intent(this, VerCanciones::class.java)
-        intent.putExtra("ALBUM_ID", albumId)
-        intent.putExtra("NOMBRE_CANCION_AGREGADA", nombreCancion) // Agregar el nombre como extra
-        startActivity(intent)
+        // Agregar la nueva canción a Firestore
+        CancionCRUD().crearCancion(nuevaCancion)
+            .addOnSuccessListener { documentReference ->
+                // Regresar a la actividad de ver canciones del álbum
+                val intent = Intent(this, VerCanciones::class.java)
+                intent.putExtra("ALBUM_ID", albumId.toInt())
+                intent.putExtra("NOMBRE_CANCION_AGREGADA", nombreCancion) // Agregar el nombre como extra
+                startActivity(intent)
+            }
+            .addOnFailureListener { e ->
+                // Manejar el fallo si es necesario
+                e.printStackTrace()
+                mostrarSnackbarError("Error al agregar la canción.")
+            }
     }
-
 
     // SnackBar
-    private fun mostrarSnackbar(mensaje: String) {
-        val rootView: View = findViewById(android.R.id.content)
-        Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
-    }
-
     private fun mostrarSnackbarError(mensaje: String) {
         val rootView = findViewById<View>(android.R.id.content)
         Snackbar.make(rootView, mensaje, Snackbar.LENGTH_LONG).show()

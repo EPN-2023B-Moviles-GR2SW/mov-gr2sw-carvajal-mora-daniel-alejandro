@@ -12,28 +12,34 @@ import android.widget.ListView
 import androidx.activity.ComponentActivity
 import com.example.examen_segundo_bimestre.Controller.AlbumAdapter
 import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
+import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.OnFailureListener
 
 class MainActivity : ComponentActivity() {
 
     var posAlbumSeleccionado = 0
-    var idAlbumSeleccionado = 0
+    var idAlbumSeleccionado = ""
     lateinit var adaptador: AlbumAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Funcionalidad Botones
+        // Inicializar Firebase
+        FirebaseApp.initializeApp(this)
 
+        // Funcionalidad Botones
         val botonAgregarAlbum = findViewById<Button>(R.id.btn_Agregar_Album)
         botonAgregarAlbum.setOnClickListener{
             irActividad(AgregarAlbum::class.java)
         }
 
         // Visualizar ListView
-
         val listViewAlbumes = findViewById<ListView>(R.id.lv_albumes_almacenados)
 
         // Implementar Menú de Opciones en el ListView
@@ -44,9 +50,7 @@ class MainActivity : ComponentActivity() {
         }
 
         // Crear el Adapter
-        val listadoDeAlbumes = AlbumCRUD(this).obtenerTodos()
-        adaptador = AlbumAdapter(this, listadoDeAlbumes.toMutableList())
-        listViewAlbumes.adapter = adaptador
+        obtenerAlbumsYActualizarAdapter(listViewAlbumes)
 
         // Verificar si hay un extra en el Intent
         if (intent.hasExtra("NOMBRE_ALBUM_AGREGADO")) {
@@ -60,7 +64,6 @@ class MainActivity : ComponentActivity() {
         listViewAlbumes.setOnItemClickListener { _, _, position, _ ->
             // Obtener el álbum directamente del adaptador
             val albumSeleccionado = adaptador.getItem(position)
-
         }
 
         // Verificar si hay un extra en el Intent
@@ -69,8 +72,6 @@ class MainActivity : ComponentActivity() {
             // Muestra el Snackbar
             mostrarSnackbarAlbumActualizado(nombreAlbumActualizado)
         }
-
-
     }
 
     // Crear Menú de Opciones
@@ -89,7 +90,7 @@ class MainActivity : ComponentActivity() {
         // Acceder al objeto Album en la posición seleccionada
         val albumSeleccionado = adaptador.getItem(position)
         // Obtener el id del Album seleccionado
-        idAlbumSeleccionado = albumSeleccionado?.id ?: -1
+        idAlbumSeleccionado = albumSeleccionado?.id ?: ""
     }
 
     // Visualizar Menú de Opciones
@@ -101,7 +102,7 @@ class MainActivity : ComponentActivity() {
         val albumSeleccionado = adaptador.getItem(position)
 
         // Almacena el ID del álbum seleccionado
-        idAlbumSeleccionado = albumSeleccionado?.id ?: -1
+        idAlbumSeleccionado = albumSeleccionado?.id ?: ""
 
         when (item.itemId) {
             R.id.mi_VerCanciones -> {
@@ -124,12 +125,31 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     // Funciones
 
     fun irActividad(clase: Class<*>){
         val intent = Intent(this, clase)
         startActivity(intent)
+    }
+
+    private fun obtenerAlbumsYActualizarAdapter(listViewAlbumes: ListView) {
+        // Obtener todos los álbumes y actualizar el Adapter
+        AlbumCRUD(this).obtenerAlbums()
+            .addOnSuccessListener(OnSuccessListener<QuerySnapshot> { querySnapshot ->
+                val albums = mutableListOf<Album>()
+                for (document in querySnapshot.documents) {
+                    val album = document.toObject(Album::class.java)
+                    if (album != null) {
+                        albums.add(album)
+                    }
+                }
+                adaptador = AlbumAdapter(this, albums)
+                listViewAlbumes.adapter = adaptador
+            })
+            .addOnFailureListener(OnFailureListener { exception ->
+                // Manejar el fallo si es necesario
+                exception.printStackTrace()
+            })
     }
 
     // Dialogo
@@ -138,11 +158,11 @@ class MainActivity : ComponentActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("¿Desea Eliminar el Álbum?")
         builder.setPositiveButton("Eliminar") { dialog, which ->
-            if (idAlbumSeleccionado != -1) {
+            if (idAlbumSeleccionado.isNotBlank()) {
                 // Llamada a la función para eliminar el álbum por ID
-                AlbumCRUD(this).borrarAlbumPorId(idAlbumSeleccionado)
+                AlbumCRUD(this).eliminarAlbumPorId(idAlbumSeleccionado)
                 // Actualizar la lista de álbumes en el adaptador
-                adaptador.actualizarLista(AlbumCRUD(this).obtenerTodos())
+                obtenerAlbumsYActualizarAdapter(findViewById(R.id.lv_albumes_almacenados))
                 // Notificar al Adapter que los datos han cambiado
                 adaptador.notifyDataSetChanged()
                 // Muestra el Snackbar
@@ -153,7 +173,6 @@ class MainActivity : ComponentActivity() {
         val dialogo = builder.create()
         dialogo.show()
     }
-
 
     // SnackBar
     private fun mostrarSnackbar(nombreAlbum: String?) {
@@ -166,9 +185,10 @@ class MainActivity : ComponentActivity() {
         Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
     }
 
-    fun mostrarSnackbarAlbumActualizado(nombreAlbum: String?) {
+    private fun mostrarSnackbarAlbumActualizado(nombreAlbum: String?) {
         val rootView: View = findViewById(android.R.id.content)
-        Snackbar.make(findViewById(android.R.id.content), " $nombreAlbum", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(rootView, " $nombreAlbum", Snackbar.LENGTH_SHORT).show()
     }
 
+    
 }
