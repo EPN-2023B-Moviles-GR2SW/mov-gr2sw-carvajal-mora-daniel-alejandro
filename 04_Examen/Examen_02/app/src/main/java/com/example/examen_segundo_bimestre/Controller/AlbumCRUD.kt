@@ -2,170 +2,100 @@ package com.example.examen_segundo_bimestre.Controller
 
 import android.content.ContentValues
 import android.content.Context
-import com.example.examen_segundo_bimestre.Database.BaseDeDatosHelper
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.Model.Cancion
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 
-class AlbumCRUD(context: Context) {
+class AlbumCRUD {
 
-    private val dbHelper: BaseDeDatosHelper = BaseDeDatosHelper(context)
+    private val db = FirebaseFirestore.getInstance()
 
-    // Operaciones CRUD para trabajar con Album en la Base de Datos
 
-    // Funcion para Crear un Album con la Base de Datos
+    companion object {
+        fun crearAlbumFromDocument(document: DocumentSnapshot): Album {
+            val id = document.id
+            val nombre = document.data?.get("nombre") as String?
+            val artista = document.data?.get("artista") as String?
+            val anioLanzamiento = document.data?.get("anioLanzamiento") as Long?
+            val esExplicito = document.data?.get("esExplicito") as Boolean?
+            val precio = document.data?.get("precio") as Double?
+            val genero = document.data?.get("genero") as String?
 
-    fun crearAlbum(album: Album){
+            if (id == null || nombre == null || artista == null || anioLanzamiento == null || esExplicito == null || precio == null || genero == null) {
+                return Album()
+            }
 
-        // Obtener la base de datos en modo escritura
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
-            put("nombre", album.nombre)
-            put("artista", album.artista)
-            put("anioLanzamiento", album.anioLanzamiento)
-            put ("esExplicito", if (album.esExplicito) 1 else 0)
-            put ("precio", album.precio)
-            put ("genero", album.genero)
+            return Album(id, nombre, artista, anioLanzamiento.toInt(), esExplicito, precio, genero)
         }
-
-        // Inserta el nuevo álbum y obtiene su ID
-        val nuevoId = db.insert(BaseDeDatosHelper.TABLA_ALBUM, null, values)
-
-        // Asigna el nuevo ID al álbum
-        album.id = nuevoId.toInt()
-
-        // Cerrar la conexion
-        db.close()
     }
 
-    // Funcion para Obtener Todos los Albumes
+    fun obtenerTodosAlbumes(): Task<QuerySnapshot> {
+        return db.collection("albums").get()
+    }
 
-    fun obtenerTodos(): List<Album> {
-        val listaAlbumes = mutableListOf<Album>()
+    fun obtenerUnAlbum(id: String): Task<DocumentSnapshot> {
+        return db.collection("albums").document(id).get()
+    }
 
-        dbHelper.readableDatabase.use { db ->
-            val query = "SELECT * FROM ${BaseDeDatosHelper.TABLA_ALBUM}"
-            val cursor = db.rawQuery(query, null)
 
-            cursor.use {
-                // Iterar sobre el cursor y construir la lista de álbumes
-                if (it.moveToFirst()) {
-                    do {
-                        val id = it.getInt(it.getColumnIndexOrThrow("id"))
-                        val nombre = it.getString(it.getColumnIndexOrThrow("nombre"))
-                        val artista = it.getString(it.getColumnIndexOrThrow("artista"))
-                        val anioLanzamiento = it.getInt(it.getColumnIndexOrThrow("anioLanzamiento"))
-                        val esExplicito = it.getInt(it.getColumnIndexOrThrow("esExplicito")) == 1
-                        val precio = it.getDouble(it.getColumnIndexOrThrow("precio"))
-                        val genero = it.getString(it.getColumnIndexOrThrow("genero"))
+    fun crearAlbum(album: Album) {
+        val albumData = hashMapOf(
+            "nombre" to album.nombre,
+            "artista" to album.artista,
+            "anioLanzamiento" to album.anioLanzamiento,
+            "esExplicito" to album.esExplicito,
+            "precio" to album.precio,
+            "genero" to album.genero
+        )
 
-                        // Crear una instancia de Album y agregarla a la lista
-                        val album = Album(id, nombre, artista, anioLanzamiento, esExplicito, precio, genero)
-                        listaAlbumes.add(album)
-                    } while (it.moveToNext())
+        db.collection("albums").add(albumData)
+            .addOnSuccessListener { documentReference ->
+                // Asignar el ID asignado por Firestore al álbum
+                album.id = documentReference.id
+            }
+    }
+
+    fun updateAlbum(id: String, album: Album) {
+        val albumData = hashMapOf(
+            "nombre" to album.nombre,
+            "artista" to album.artista,
+            "anioLanzamiento" to album.anioLanzamiento,
+            "esExplicito" to album.esExplicito,
+            "precio" to album.precio,
+            "genero" to album.genero
+        )
+
+        db.collection("albums").document(id).set(albumData)
+    }
+
+    fun removeAlbum(id: String) {
+        db.collection("albums").document(id).delete()
+    }
+
+    // Función para obtener todas las canciones de un álbum desde Firestore
+    fun obtenerCancionesPorAlbumId(albumId: String): Task<QuerySnapshot> {
+        return db.collection("canciones").whereEqualTo("albumId", albumId).get()
+    }
+
+    fun obtenerAlbumPorId(context: Context, albumId: Int, onAlbumObtenido: (Album?) -> Unit) {
+        val albumDocument = db.collection("albums").document(albumId.toString())
+
+        albumDocument.get()
+            .addOnSuccessListener { documentSnapshot ->
+                val album = if (documentSnapshot.exists()) {
+                    AlbumCRUD.crearAlbumFromDocument(documentSnapshot)
+                } else {
+                    null
                 }
+
+                onAlbumObtenido(album)
             }
-        }
-
-        return listaAlbumes
-    }
-
-    // Funcion para obtener un Album por su ID
-
-    fun obtenerAlbumPorId(albumId: Int): Album? {
-        var album: Album? = null
-
-        dbHelper.readableDatabase.use { db ->
-            val query = "SELECT * FROM ${BaseDeDatosHelper.TABLA_ALBUM} WHERE id = ?"
-            val cursor = db.rawQuery(query, arrayOf(albumId.toString()))
-
-            cursor.use {
-                if (it.moveToFirst()) {
-                    val id = it.getInt(it.getColumnIndexOrThrow("id"))
-                    val nombre = it.getString(it.getColumnIndexOrThrow("nombre"))
-                    val artista = it.getString(it.getColumnIndexOrThrow("artista"))
-                    val anioLanzamiento = it.getInt(it.getColumnIndexOrThrow("anioLanzamiento"))
-                    val esExplicito = it.getInt(it.getColumnIndexOrThrow("esExplicito")) == 1
-                    val precio = it.getDouble(it.getColumnIndexOrThrow("precio"))
-                    val genero = it.getString(it.getColumnIndexOrThrow("genero"))
-
-                    album = Album(id, nombre, artista, anioLanzamiento, esExplicito, precio, genero)
-                }
+            .addOnFailureListener { e ->
+                // Manejar el fallo, por ejemplo, mostrar un mensaje al usuario
+                onAlbumObtenido(null)
             }
-        }
-
-        return album
     }
-
-    // Funcion para Actualizar un Album
-
-    fun updateAlbum(albumActualizado: Album) {
-        dbHelper.writableDatabase.use { db ->
-            val values = ContentValues().apply {
-                put("nombre", albumActualizado.nombre)
-                put("artista", albumActualizado.artista)
-                put("anioLanzamiento", albumActualizado.anioLanzamiento)
-                put("esExplicito", if (albumActualizado.esExplicito) 1 else 0)
-                put("precio", albumActualizado.precio)
-                put("genero", albumActualizado.genero)
-            }
-
-            // Especificar la condición para la actualización (basada en el ID del álbum)
-            val whereClause = "id = ?"
-            val whereArgs = arrayOf(albumActualizado.id.toString())
-
-            // Actualizar el álbum en la base de datos
-            val filasActualizadas = db.update(BaseDeDatosHelper.TABLA_ALBUM, values, whereClause, whereArgs)
-
-        }
-    }
-
-    // Funcion para Borrar un Album por su ID
-
-    fun borrarAlbumPorId(albumId: Int) {
-        val db = dbHelper.writableDatabase
-
-        // Especificar la condición para la eliminación (basada en el ID del álbum)
-        val whereClause = "id = ?"
-        val whereArgs = arrayOf(albumId.toString())
-
-        // Borrar el álbum de la base de datos
-        db.delete(BaseDeDatosHelper.TABLA_ALBUM, whereClause, whereArgs)
-
-        // Cerrar la conexión a la base de datos
-        db.close()
-    }
-
-    // Funcion Auxiliar para obtener todas las Canciones del Album
-
-    fun obtenerCancionesPorAlbumId(albumId: Int): List<Cancion> {
-        val listaCanciones = mutableListOf<Cancion>()
-
-        dbHelper.readableDatabase.use { db ->
-            val query = "SELECT * FROM ${BaseDeDatosHelper.TABLA_CANCION} WHERE albumId = ?"
-            val cursor = db.rawQuery(query, arrayOf(albumId.toString()))
-
-            cursor.use {
-                // Iterar sobre el cursor y construir la lista de canciones
-                if (it.moveToFirst()) {
-                    do {
-                        val id = it.getInt(it.getColumnIndexOrThrow("id"))
-                        val nombre = it.getString(it.getColumnIndexOrThrow("nombre"))
-                        val duracion = it.getDouble(it.getColumnIndexOrThrow("duracion"))
-                        val artistaColaborador = it.getString(it.getColumnIndexOrThrow("artistaColaborador"))
-                        val letra = it.getInt(it.getColumnIndexOrThrow("letra")) == 1
-                        val escritor = it.getString(it.getColumnIndexOrThrow("escritor"))
-                        val productor = it.getString(it.getColumnIndexOrThrow("productor"))
-
-                        // Crear una instancia de Cancion y agregarla a la lista
-                        val cancion = Cancion(id, albumId, nombre, duracion, artistaColaborador, letra, escritor, productor)
-                        listaCanciones.add(cancion)
-                    } while (it.moveToNext())
-                }
-            }
-        }
-
-        return listaCanciones
-    }
-
 }

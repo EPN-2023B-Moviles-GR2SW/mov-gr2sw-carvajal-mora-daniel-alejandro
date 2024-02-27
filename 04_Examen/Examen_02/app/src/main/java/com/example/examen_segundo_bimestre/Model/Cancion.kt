@@ -1,8 +1,13 @@
 package com.example.examen_segundo_bimestre.Model
 
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.PropertyName
+
 data class Cancion(
-    var id: Int,
-    var albumId: Int,
+    @DocumentId
+    var id: String = "", // Cambiado a String para ser compatible con DocumentId de Firestore
+    @PropertyName("albumId")
+    var albumId: String = "", // Cambiado a String para ser compatible con DocumentId de Firestore
     var nombre: String,
     var duracion: Double,
     var artistaColaborador: String,
@@ -10,16 +15,28 @@ data class Cancion(
     var escritor: String,
     var productor: String
 ) {
+    // Constructor vacío
+    constructor() : this(
+        id = "",
+        albumId = "",
+        nombre = "",
+        duracion = 0.0,
+        artistaColaborador = "",
+        letra = false,
+        escritor = "",
+        productor = ""
+    )
+
 
     // Constructor para simplificar la creación de instancias
     constructor(
-        albumId: Int,
+        albumId: String,
         nombre: String,
         duracion: Double,
         artistaColaborador: String,
         letra: Boolean,
         escritor: String,
         productor: String
-    ) : this(0, albumId, nombre, duracion, artistaColaborador, letra, escritor, productor)
+    ) : this("", albumId, nombre, duracion, artistaColaborador, letra, escritor, productor)
 
 }

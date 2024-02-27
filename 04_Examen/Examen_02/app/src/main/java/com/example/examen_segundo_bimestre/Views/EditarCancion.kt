@@ -17,8 +17,8 @@ import com.google.android.material.textfield.TextInputEditText
 class EditarCancion : AppCompatActivity() {
 
     // Variables para almacenar el ID del álbum y canción que se están editando
-    private var albumId: Int = -1
-    private var cancionId: Int = -1
+    private var albumId: String = ""
+    private var cancionId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +37,15 @@ class EditarCancion : AppCompatActivity() {
         }
 
         // Obtener el ID del álbum desde el Intent
-        albumId = intent.getIntExtra("ALBUM_ID", -1)
+        albumId = intent.getStringExtra("ALBUM_ID") ?: ""
         // Obtener el ID de la canción desde el Intent
-        cancionId = intent.getIntExtra("CANCION_ID", -1)
+        cancionId = intent.getStringExtra("CANCION_ID") ?: ""
 
         // Verificar si se recibió un ID válido
-        if (albumId != -1 || cancionId != -1) {
+        if (albumId.isNotEmpty() && cancionId.isNotEmpty()) {
             // Cargar datos del álbum y llenar la interfaz
             cargarDatosDeLaCancion(albumId, cancionId)
-        }else{
+        } else {
             // Manejar el caso en el que no se proporcionó un ID válido
             Toast.makeText(this, "No se proporcionó un ID de álbum y/o canción válido", Toast.LENGTH_SHORT).show()
             finish() // Cerrar la actividad si no hay ID válido
@@ -65,26 +65,38 @@ class EditarCancion : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun irActividadConID(clase: Class<*>, idCancion: Int) {
+    private fun irActividadConID(clase: Class<*>, idCancion: String) {
         val intent = Intent(this, clase)
         intent.putExtra("ALBUM_ID", albumId)
         intent.putExtra("CANCION_ID", idCancion)
         startActivity(intent)
     }
 
-    private fun cargarDatosDeLaCancion(albumId: Int, cancionId: Int) {
+    private fun cargarDatosDeLaCancion(albumId: String, cancionId: String) {
         // Obtener la canción de la base de datos o donde se almacena las canciones
-        val cancionAEditar = CancionCRUD(this).obtenerCancionPorId(cancionId)
+        CancionCRUD().obtenerUnaCancion(cancionId)
+            .addOnSuccessListener { documentSnapshot ->
+                val cancion = if (documentSnapshot.exists()) {
+                    CancionCRUD.createCancionFromDocument(documentSnapshot)
+                } else {
+                    null
+                }
 
-        // Llenar la interfaz con los datos actuales de la canción
-        cancionAEditar?.let {
-            findViewById<EditText>(R.id.input_Editar_Nombre_Cancion).setText(it.nombre)
-            findViewById<EditText>(R.id.input_Editar_Duracion_Cancion).setText(it.duracion.toString())
-            findViewById<EditText>(R.id.input_Editar_Colaborador_Cancion).setText(it.artistaColaborador)
-            findViewById<Switch>(R.id.sw_Editar_Letra_Cancion).isChecked = it.letra
-            findViewById<EditText>(R.id.input_Editar_Escritor_Cancion).setText(it.escritor)
-            findViewById<EditText>(R.id.input_Editar_Productor_Cancion).setText(it.productor)
-        }
+                // Llenar la interfaz con los datos actuales de la canción
+                cancion?.let {
+                    findViewById<EditText>(R.id.input_Editar_Nombre_Cancion).setText(it.nombre)
+                    findViewById<EditText>(R.id.input_Editar_Duracion_Cancion).setText(it.duracion.toString())
+                    findViewById<EditText>(R.id.input_Editar_Colaborador_Cancion).setText(it.artistaColaborador)
+                    findViewById<Switch>(R.id.sw_Editar_Letra_Cancion).isChecked = it.letra
+                    findViewById<EditText>(R.id.input_Editar_Escritor_Cancion).setText(it.escritor)
+                    findViewById<EditText>(R.id.input_Editar_Productor_Cancion).setText(it.productor)
+                }
+            }
+            .addOnFailureListener { e ->
+                // Manejar el fallo, por ejemplo, mostrar un mensaje al usuario
+                Toast.makeText(this, "Error al cargar datos de la canción", Toast.LENGTH_SHORT).show()
+                finish()
+            }
     }
 
     private fun actualizarCancion() {
@@ -112,10 +124,10 @@ class EditarCancion : AppCompatActivity() {
                 productor = nuevoProductor
             )
             // Actualizar la canción utilizando CancionCRUD
-            CancionCRUD(this).actualizarCancion(cancionActualizada)
+            CancionCRUD().updateCancion(cancionId, cancionActualizada)
 
             // Regresar a VerCanciones
-            irActividadConIDs(VerCanciones::class.java, albumId, cancionId)
+            irActividadConID(VerCanciones::class.java, cancionId)
 
 
         }

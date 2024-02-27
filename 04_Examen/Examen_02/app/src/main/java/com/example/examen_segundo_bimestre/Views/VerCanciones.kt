@@ -31,7 +31,7 @@ class VerCanciones : AppCompatActivity() {
 
 
         // Obtener el ID del álbum desde el Intent
-        val albumId = intent.getIntExtra("ALBUM_ID", -1)
+        val albumId = intent.getStringExtra("ALBUM_ID")
 
 
         // Funcionalidad Botones
@@ -42,46 +42,46 @@ class VerCanciones : AppCompatActivity() {
 
         val botonAgregarCanciones = findViewById<Button>(R.id.btn_Agregar_Canciones)
         botonAgregarCanciones.setOnClickListener {
-            val albumId = intent.getIntExtra("ALBUM_ID", -1)
+            val albumId = intent.getStringExtra("ALBUM_ID")
             irActividadConID(AgregarCancion::class.java, albumId)
         }
 
 
         // Verificar si se dio un ID Válido
-        if (albumId != -1){
+        if (!albumId.isNullOrEmpty()) {
             // Obtener el álbum correspondiente desde la base de datos
-            album = AlbumCRUD(this).obtenerAlbumPorId(albumId) ?: Album()
+            AlbumCRUD().obtenerUnAlbum(albumId).addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    album = AlbumCRUD.crearAlbumFromDocument(documentSnapshot)
+                    // Mostrar el nombre del álbum
+                    val nombreAlbumTextView = findViewById<TextView>(R.id.txt_Inserte_Nombre)
+                    nombreAlbumTextView.text = album.nombre
 
-            // Obtener la lista de canciones asociadas al álbum
-            listaDeCanciones = CancionCRUD(this).obtenerCancionesPorAlbumId(albumId)
+                    // Configurar el Adapter para el ListView con el nuevo adaptador
+                    val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
+                    val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
+                    listViewCanciones.adapter = adaptadorCanciones
 
-            // Mostrar el nombre del álbum
-            val nombreAlbumTextView = findViewById<TextView>(R.id.txt_Inserte_Nombre)
-            nombreAlbumTextView.text = album.nombre
+                    // Obtener el nombre de la canción agregada de los extras del Intent
+                    val nombreCancionAgregada = intent.getStringExtra("NOMBRE_CANCION_AGREGADA")
 
-            // Configurar el Adapter para el ListView con el nuevo adaptador
-            val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
-            val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
-            listViewCanciones.adapter = adaptadorCanciones
+                    // Verificar si hay un nombre de canción agregada
+                    if (!nombreCancionAgregada.isNullOrEmpty()) {
+                        // Mostrar SnackBar con el mensaje de la canción agregada
+                        mostrarSnackbar("Canción Agregada: $nombreCancionAgregada")
+                    }
 
-            // Obtener el nombre de la canción agregada de los extras del Intent
-            val nombreCancionAgregada = intent.getStringExtra("NOMBRE_CANCION_AGREGADA")
+                    // Implementar Menú de Opciones en el ListView de Canciones
+                    val listViewCancionesContextMenu = findViewById<ListView>(R.id.lv_Listado_Canciones)
+                    registerForContextMenu(listViewCancionesContextMenu)
 
-            // Verificar si hay un nombre de canción agregada
-            if (!nombreCancionAgregada.isNullOrEmpty()) {
-                // Mostrar SnackBar con el mensaje de la canción agregada
-                mostrarSnackbar("Canción Agregada: $nombreCancionAgregada")
+                    listViewCanciones.setOnItemClickListener { _, _, position, _ ->
+                        // obtener la canción directamente del adaptador
+                        val cancionSeleccionada = listaDeCanciones[position]
+                        // Puedes realizar alguna acción al hacer clic en una canción
+                    }
+                }
             }
-        }
-
-        // Implementar Menú de Opciones en el ListView de Canciones
-        val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
-        registerForContextMenu(listViewCanciones)
-
-        listViewCanciones.setOnItemClickListener { _, _, position, _ ->
-            // obtener la canción directamente del adaptador
-            val cancionSeleccionada = listaDeCanciones[position]
-
         }
 
     }
@@ -122,26 +122,31 @@ class VerCanciones : AppCompatActivity() {
             R.id.mi_EditarCancion -> {
                 irActividadConIDs(EditarCancion::class.java, idAlbumAsociado, idCancionSeleccionada)
                 return true
-
             }
             R.id.mi_EliminarCancion -> {
                 // Eliminar la canción seleccionada
-                CancionCRUD(this).eliminarCancionPorId(idCancionSeleccionada)
+                CancionCRUD().removeCancion(idCancionSeleccionada)
 
-                // Actualizar la lista de canciones y el adaptador
-                listaDeCanciones = CancionCRUD(this).obtenerCancionesPorAlbumId(album.id)
-                val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
-                val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
-                listViewCanciones.adapter = adaptadorCanciones
+                // Actualizar la lista de canciones
+                val task = CancionCRUD().obtenerCancionesPorAlbumId(album.id)
+                task.addOnSuccessListener { querySnapshot ->
+                    // Mapear los documentos a objetos Cancion
+                    listaDeCanciones = querySnapshot.documents.map { CancionCRUD.createCancionFromDocument(it) }
 
-                // Mostrar Snackbar
-                mostrarSnackbar("Canción Eliminada")
+                    // Crear el nuevo adaptador con la lista actualizada
+                    val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
+
+                    // Obtener la referencia al ListView y establecer el nuevo adaptador
+                    val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
+                    listViewCanciones.adapter = adaptadorCanciones
+
+                    // Mostrar Snackbar
+                    mostrarSnackbar("Canción Eliminada")
+                }
                 return true
             }
-
             else -> return super.onContextItemSelected(item)
         }
-
     }
 
 
@@ -152,14 +157,14 @@ class VerCanciones : AppCompatActivity() {
     }
 
 
-    fun irActividadConID(clase: Class<*>, albumId: Int) {
+    fun irActividadConID(clase: Class<*>, albumId: String?) {
         val intent = Intent(this, clase)
         intent.putExtra("ALBUM_ID", albumId)
         startActivity(intent)
     }
 
     // Funcion para ir a la actividad con ambos IDs
-    fun irActividadConIDs(clase: Class<*>, idAlbum: Int, idCancion: Int) {
+    fun irActividadConIDs(clase: Class<*>, idAlbum: String?, idCancion: String?) {
         val intent = Intent(this, clase)
         intent.putExtra("ALBUM_ID", idAlbum)
         intent.putExtra("CANCION_ID", idCancion)

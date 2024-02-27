@@ -51,7 +51,7 @@ class AgregarCancion : AppCompatActivity() {
         val colaboradorCancion = findViewById<TextInputEditText>(R.id.input_Colaborador_Cancion).text.toString()
 
         // Obtener el ID del álbum desde el Intent
-        val albumId = intent.getIntExtra("ALBUM_ID", -1)
+        val albumId = intent.getStringExtra("ALBUM_ID") ?: ""
 
         // Validar que no haya campos vacíos
         if (nombreCancion.isBlank() || duracionCancionText.isBlank() || escritorCancion.isBlank() || productorCancion.isBlank()) {
@@ -77,7 +77,7 @@ class AgregarCancion : AppCompatActivity() {
 
         // Crear una nueva instancia de la Cancion
         val nuevaCancion = Cancion(
-            id = 0, // Este ID se asignará automáticamente en la base de datos
+            id = "", // Firestore asignará automáticamente un ID
             albumId = albumId,
             nombre = nombreCancion,
             duracion = duracionCancion,
@@ -88,7 +88,7 @@ class AgregarCancion : AppCompatActivity() {
         )
 
         // Agregar la nueva canción a la base de datos
-        CancionCRUD(this).crearCancion(nuevaCancion)
+        CancionCRUD().crearCancion(nuevaCancion)
 
         // Regresar a la actividad de ver canciones del álbum
         val intent = Intent(this, VerCanciones::class.java)

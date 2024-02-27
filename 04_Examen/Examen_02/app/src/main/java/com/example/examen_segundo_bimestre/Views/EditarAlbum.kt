@@ -17,7 +17,8 @@ import com.google.android.material.textfield.TextInputEditText
 class EditarAlbum : AppCompatActivity() {
 
     // Variable para almacenar el ID del álbum que se está editando
-    private var albumId: Int = -1
+    private var albumId: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +39,10 @@ class EditarAlbum : AppCompatActivity() {
 
 
         // Obtener ID del álbum recibido del Intent
-        albumId = intent.getIntExtra("ALBUM_ID", -1)
+        albumId = intent.getStringExtra("ALBUM_ID") ?: ""
 
         // Verificar si se recibió un ID válido
-        if (albumId != -1) {
+        if (albumId.isNotEmpty()) {
             // Cargar datos del álbum y llenar la interfaz
             cargarDatosDelAlbum(albumId)
         } else {
@@ -54,19 +55,30 @@ class EditarAlbum : AppCompatActivity() {
 
     // Funciones
 
-    fun cargarDatosDelAlbum(albumId: Int) {
-        // Obtener el álbum de la base de datos o donde se almacene el Álbum
-        val albumAEditar = AlbumCRUD(this).obtenerAlbumPorId(albumId)
+    private fun cargarDatosDelAlbum(albumId: String) {
+        AlbumCRUD().obtenerUnAlbum(albumId)
+            .addOnSuccessListener { documentSnapshot ->
+                val album = if (documentSnapshot.exists()) {
+                    AlbumCRUD.crearAlbumFromDocument(documentSnapshot)
+                } else {
+                    null
+                }
 
-        // Llenar la interfaz con los datos actuales del álbum
-        albumAEditar?.let {
-            findViewById<EditText>(R.id.input_Editar_Nombre_Album).setText(it.nombre)
-            findViewById<EditText>(R.id.input_Editar_Artista_Album).setText(it.artista)
-            findViewById<EditText>(R.id.input_Editar_Anio_Album).setText(it.anioLanzamiento.toString())
-            findViewById<EditText>(R.id.input_Editar_Precio_Album).setText(it.precio.toString())
-            findViewById<EditText>(R.id.input_Editar_Genero_Album).setText(it.genero)
-            findViewById<Switch>(R.id.sw_Explicito_Album2).isChecked = it.esExplicito
-        }
+                // Llenar la interfaz con los datos actuales del álbum
+                album?.let {
+                    findViewById<EditText>(R.id.input_Editar_Nombre_Album).setText(it.nombre)
+                    findViewById<EditText>(R.id.input_Editar_Artista_Album).setText(it.artista)
+                    findViewById<EditText>(R.id.input_Editar_Anio_Album).setText(it.anioLanzamiento.toString())
+                    findViewById<EditText>(R.id.input_Editar_Precio_Album).setText(it.precio.toString())
+                    findViewById<EditText>(R.id.input_Editar_Genero_Album).setText(it.genero)
+                    findViewById<Switch>(R.id.sw_Explicito_Album2).isChecked = it.esExplicito
+                }
+            }
+            .addOnFailureListener { e ->
+                // Manejar el fallo, por ejemplo, mostrar un mensaje al usuario
+                Toast.makeText(this, "Error al cargar datos del álbum", Toast.LENGTH_SHORT).show()
+                finish()
+            }
     }
 
     private fun actualizarAlbum() {
@@ -96,7 +108,7 @@ class EditarAlbum : AppCompatActivity() {
             )
 
             // Actualizar el álbum utilizando AlbumCRUD
-            AlbumCRUD(this).updateAlbum(albumActualizado)
+            AlbumCRUD().updateAlbum(albumId, albumActualizado)
 
             //Regresar a Main Activity
             val intent = Intent(this, MainActivity::class.java)

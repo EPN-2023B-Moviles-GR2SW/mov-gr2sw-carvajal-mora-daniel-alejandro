@@ -1,7 +1,13 @@
 package com.example.examen_segundo_bimestre.Model
 
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.PropertyName
+
 data class Album(
-    var id: Int = 0,
+    @DocumentId
+    @get:PropertyName("id")
+    @set:PropertyName("id")
+    var id: String = "",
     var nombre: String,
     var artista: String,
     var anioLanzamiento: Int,
@@ -12,7 +18,7 @@ data class Album(
 ){
     // Constructor vacío
     constructor() : this(
-        id = 0,
+        id = "",
         nombre = "",
         artista = "",
         anioLanzamiento = 0,
@@ -31,7 +37,7 @@ data class Album(
         anioLanzamiento: Int,
         esExplicito: Boolean
     ) : this(
-        id = 0,
+        id ="",
         nombre = nombre,
         artista = artista,
         anioLanzamiento = anioLanzamiento,

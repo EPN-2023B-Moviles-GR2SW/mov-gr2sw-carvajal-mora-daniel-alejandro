@@ -62,7 +62,7 @@ class AgregarAlbum : AppCompatActivity() {
                 )
 
                 // Utilizar la función para agregar el nuevo álbum
-                AlbumCRUD(this).crearAlbum(nuevoAlbum)
+                AlbumCRUD().crearAlbum(nuevoAlbum)
 
                 // Regresa a Main Activity
                 val intent = Intent(this, MainActivity::class.java)
