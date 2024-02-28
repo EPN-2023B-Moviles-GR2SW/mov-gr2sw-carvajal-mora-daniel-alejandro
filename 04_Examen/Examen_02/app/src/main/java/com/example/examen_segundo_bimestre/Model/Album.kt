@@ -4,9 +4,9 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 
 data class Album(
-    @DocumentId
-    @get:PropertyName("id")
-    @set:PropertyName("id")
+    @DocumentId                         // Marca el campo como el ID del documento en Firestore
+    @get:PropertyName("id")             // Indica que el getter de la propiedad "id" usa el nombre "id" en Firestore
+    @set:PropertyName("id")             // Indica que el setter de la propiedad "id" usa el nombre "id" en Firestore
     var id: String,
     var nombre: String,
     var artista: String,
