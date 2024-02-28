@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
-import com.example.examen_segundo_bimestre.Controller.CancionCRUD
+import com.example.examen_segundo_bimestre.Controller.CancionFirestore
 import com.example.examen_segundo_bimestre.Model.Cancion
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
@@ -74,10 +74,10 @@ class EditarCancion : AppCompatActivity() {
 
     private fun cargarDatosDeLaCancion(albumId: String, cancionId: String) {
         // Obtener la canción de la base de datos o donde se almacena las canciones
-        CancionCRUD().obtenerUnaCancion(cancionId)
+        CancionFirestore().obtenerUnaCancion(cancionId)
             .addOnSuccessListener { documentSnapshot ->
                 val cancion = if (documentSnapshot.exists()) {
-                    CancionCRUD.createCancionFromDocument(documentSnapshot)
+                    CancionFirestore.createCancionFromDocument(documentSnapshot)
                 } else {
                     null
                 }
@@ -124,7 +124,7 @@ class EditarCancion : AppCompatActivity() {
                 productor = nuevoProductor
             )
             // Actualizar la canción utilizando CancionCRUD
-            CancionCRUD().updateCancion(cancionId, cancionActualizada)
+            CancionFirestore().updateCancion(cancionId, cancionActualizada)
 
             // Regresar a VerCanciones
             irActividadConID(VerCanciones::class.java, cancionId)

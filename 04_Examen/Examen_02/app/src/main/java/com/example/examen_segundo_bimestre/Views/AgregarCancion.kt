@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Switch
-import com.example.examen_segundo_bimestre.Controller.CancionCRUD
+import com.example.examen_segundo_bimestre.Controller.CancionFirestore
 import com.example.examen_segundo_bimestre.Model.Cancion
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
@@ -88,7 +88,7 @@ class AgregarCancion : AppCompatActivity() {
         )
 
         // Agregar la nueva canción a la base de datos
-        CancionCRUD().crearCancion(nuevaCancion)
+        CancionFirestore().crearCancion(nuevaCancion)
 
         // Regresar a la actividad de ver canciones del álbum
         val intent = Intent(this, VerCanciones::class.java)

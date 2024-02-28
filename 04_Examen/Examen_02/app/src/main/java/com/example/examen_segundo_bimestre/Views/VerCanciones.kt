@@ -10,9 +10,9 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
+import com.example.examen_segundo_bimestre.Controller.AlbumFirestore
 import com.example.examen_segundo_bimestre.Controller.CancionAdapter
-import com.example.examen_segundo_bimestre.Controller.CancionCRUD
+import com.example.examen_segundo_bimestre.Controller.CancionFirestore
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.Model.Cancion
 import com.example.examen_segundo_bimestre.R
@@ -52,9 +52,9 @@ class VerCanciones : AppCompatActivity() {
         // Verificar si se dio un ID Válido
         if (!albumId.isNullOrEmpty()) {
             // Obtener el álbum correspondiente desde la base de datos
-            AlbumCRUD().obtenerUnAlbum(albumId).addOnSuccessListener { documentSnapshot ->
+            AlbumFirestore().obtenerUnAlbum(albumId).addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
-                    album = AlbumCRUD.crearAlbumFromDocument(documentSnapshot)
+                    album = AlbumFirestore.crearAlbumFromDocument(documentSnapshot)
                     // Mostrar el nombre del álbum
                     val nombreAlbumTextView = findViewById<TextView>(R.id.txt_Inserte_Nombre)
                     nombreAlbumTextView.text = album.nombre
@@ -74,10 +74,10 @@ class VerCanciones : AppCompatActivity() {
                     }
 
                     // Después de agregar la canción a Firestore
-                    AlbumCRUD().obtenerCancionesPorAlbumId(album.id)
+                    AlbumFirestore().obtenerCancionesPorAlbumId(album.id)
                         .addOnSuccessListener { querySnapshot ->
                             // Mapear los documentos a objetos Cancion
-                            listaDeCanciones = querySnapshot.documents.map { CancionCRUD.createCancionFromDocument(it) }
+                            listaDeCanciones = querySnapshot.documents.map { CancionFirestore.createCancionFromDocument(it) }
 
                             // Crear el nuevo adaptador con la lista actualizada
                             adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
@@ -143,13 +143,13 @@ class VerCanciones : AppCompatActivity() {
             }
             R.id.mi_EliminarCancion -> {
                 // Eliminar la canción seleccionada
-                CancionCRUD().removeCancion(idCancionSeleccionada)
+                CancionFirestore().removeCancion(idCancionSeleccionada)
 
                 // Actualizar la lista de canciones
-                val task = CancionCRUD().obtenerCancionesPorAlbumId(album.id)
+                val task = CancionFirestore().obtenerCancionesPorAlbumId(album.id)
                 task.addOnSuccessListener { querySnapshot ->
                     // Mapear los documentos a objetos Cancion
-                    listaDeCanciones = querySnapshot.documents.map { CancionCRUD.createCancionFromDocument(it) }
+                    listaDeCanciones = querySnapshot.documents.map { CancionFirestore.createCancionFromDocument(it) }
 
                     // Crear el nuevo adaptador con la lista actualizada
                     val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)

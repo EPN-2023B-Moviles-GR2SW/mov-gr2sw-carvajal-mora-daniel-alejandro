@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
-import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
+import com.example.examen_segundo_bimestre.Controller.AlbumFirestore
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
@@ -62,7 +62,7 @@ class AgregarAlbum : AppCompatActivity() {
                 )
 
                 // Utilizar la función para agregar el nuevo álbum
-                AlbumCRUD().crearAlbum(nuevoAlbum)
+                AlbumFirestore().crearAlbum(nuevoAlbum)
 
                 // Regresa a Main Activity
                 val intent = Intent(this, MainActivity::class.java)

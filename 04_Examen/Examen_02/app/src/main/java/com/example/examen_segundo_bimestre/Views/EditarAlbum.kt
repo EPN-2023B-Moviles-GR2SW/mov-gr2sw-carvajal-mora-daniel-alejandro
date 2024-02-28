@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
-import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
+import com.example.examen_segundo_bimestre.Controller.AlbumFirestore
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.R
 import com.google.android.material.snackbar.Snackbar
@@ -56,10 +56,10 @@ class EditarAlbum : AppCompatActivity() {
     // Funciones
 
     private fun cargarDatosDelAlbum(albumId: String) {
-        AlbumCRUD().obtenerUnAlbum(albumId)
+        AlbumFirestore().obtenerUnAlbum(albumId)
             .addOnSuccessListener { documentSnapshot ->
                 val album = if (documentSnapshot.exists()) {
-                    AlbumCRUD.crearAlbumFromDocument(documentSnapshot)
+                    AlbumFirestore.crearAlbumFromDocument(documentSnapshot)
                 } else {
                     null
                 }
@@ -108,7 +108,7 @@ class EditarAlbum : AppCompatActivity() {
             )
 
             // Actualizar el álbum utilizando AlbumCRUD
-            AlbumCRUD().updateAlbum(albumId, albumActualizado)
+            AlbumFirestore().updateAlbum(albumId, albumActualizado)
 
             //Regresar a Main Activity
             val intent = Intent(this, MainActivity::class.java)

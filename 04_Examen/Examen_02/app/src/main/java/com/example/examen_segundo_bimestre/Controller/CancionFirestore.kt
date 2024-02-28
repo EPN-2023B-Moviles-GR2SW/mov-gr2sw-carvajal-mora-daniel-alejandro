@@ -1,18 +1,17 @@
 package com.example.examen_segundo_bimestre.Controller
 
-import android.content.ContentValues
-import android.content.Context
-import com.example.examen_segundo_bimestre.Database.BaseDeDatosHelper
 import com.example.examen_segundo_bimestre.Model.Cancion
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 
-class CancionCRUD {
+class CancionFirestore {
 
     private val db = FirebaseFirestore.getInstance()
 
+    //Función estática en la clase `Cancion` que crea y devuelve una instancia de `Cancion` a partir de un `DocumentSnapshot`.
+    //Se utiliza para convertir datos recuperados de Firestore en objetos `Cancion` en la aplicación Kotlin
     companion object {
         fun createCancionFromDocument(document: DocumentSnapshot): Cancion {
             val id = document.id

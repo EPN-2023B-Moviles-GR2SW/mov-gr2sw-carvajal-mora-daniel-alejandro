@@ -10,20 +10,10 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ListView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.examen_segundo_bimestre.Controller.AlbumAdapter
-import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
-import com.example.examen_segundo_bimestre.Controller.CancionCRUD
+import com.example.examen_segundo_bimestre.Controller.AlbumFirestore
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.R
-import com.example.examen_segundo_bimestre.ui.theme.Examen_Segundo_BimestreTheme
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : ComponentActivity() {
@@ -59,11 +49,11 @@ class MainActivity : ComponentActivity() {
         listViewAlbumes.adapter = adaptador
 
         // Obtener la lista de álbumes desde Firestore
-        AlbumCRUD().obtenerTodosAlbumes()
+        AlbumFirestore().obtenerTodosAlbumes()
             .addOnSuccessListener { querySnapshot ->
                 val listaAlbumes = mutableListOf<Album>()
                 for (document in querySnapshot) {
-                    val album = AlbumCRUD.crearAlbumFromDocument(document)
+                    val album = AlbumFirestore.crearAlbumFromDocument(document)
                     listaAlbumes.add(album)
                 }
                 // Actualizar el adaptador con la nueva lista de álbumes
@@ -166,15 +156,15 @@ class MainActivity : ComponentActivity() {
         builder.setPositiveButton("Eliminar") { dialog, which ->
             if (!idAlbumSeleccionado.isNullOrEmpty()) {
                 // Eliminar álbum y sus canciones asociadas
-                AlbumCRUD().removeAlbum(idAlbumSeleccionado!!)
-                AlbumCRUD().eliminarCancionesAsociadasAlAlbum(idAlbumSeleccionado!!)
+                AlbumFirestore().removeAlbum(idAlbumSeleccionado!!)
+                AlbumFirestore().eliminarCancionesAsociadasAlAlbum(idAlbumSeleccionado!!)
 
                 // Obtener la lista de álbumes actualizada después de la eliminación
-                AlbumCRUD().obtenerTodosAlbumes()
+                AlbumFirestore().obtenerTodosAlbumes()
                     .addOnSuccessListener { querySnapshot ->
                         val listaAlbumes = mutableListOf<Album>()
                         for (document in querySnapshot) {
-                            val album = AlbumCRUD.crearAlbumFromDocument(document)
+                            val album = AlbumFirestore.crearAlbumFromDocument(document)
                             listaAlbumes.add(album)
                         }
                         // Actualizar el adaptador con la nueva lista de álbumes

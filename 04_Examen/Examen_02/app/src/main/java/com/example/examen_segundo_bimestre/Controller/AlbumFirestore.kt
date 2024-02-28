@@ -1,19 +1,17 @@
 package com.example.examen_segundo_bimestre.Controller
 
-import android.content.ContentValues
-import android.content.Context
 import com.example.examen_segundo_bimestre.Model.Album
-import com.example.examen_segundo_bimestre.Model.Cancion
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 
-class AlbumCRUD {
+class AlbumFirestore {
 
     private val db = FirebaseFirestore.getInstance()
 
-
+    //Función estática en la clase `Album` que crea y devuelve una instancia de `Album` a partir de un `DocumentSnapshot`.
+    //Se utiliza para convertir datos recuperados de Firestore en objetos `Album` en la aplicación Kotlin
     companion object {
         fun crearAlbumFromDocument(document: DocumentSnapshot): Album {
             val id = document.id
@@ -90,7 +88,7 @@ class AlbumCRUD {
                 for (document in querySnapshot) {
                     val cancionId = document.id
                     // Eliminar la canción
-                    CancionCRUD().removeCancion(cancionId)
+                    CancionFirestore().removeCancion(cancionId)
                 }
             }
             .addOnFailureListener { exception ->
