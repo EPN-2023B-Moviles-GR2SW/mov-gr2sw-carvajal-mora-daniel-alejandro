@@ -22,7 +22,7 @@ class AgregarCancion : AppCompatActivity() {
         // Funcionalidad Botones
         val botonRegresarListaCanciones = findViewById<Button>(R.id.btn_Regresar_Listado_Canciones)
         botonRegresarListaCanciones.setOnClickListener {
-            val albumId = intent.getIntExtra("ALBUM_ID", -1)
+            val albumId = intent.getStringExtra("ALBUM_ID") ?: ""
             irActividad(VerCanciones::class.java, albumId)
         }
 
@@ -35,7 +35,7 @@ class AgregarCancion : AppCompatActivity() {
 
 
     // Funciones
-    fun irActividad(clase: Class<*>, albumId: Int) {
+    fun irActividad(clase: Class<*>, albumId: String) {
         val intent = Intent(this, clase)
         intent.putExtra("ALBUM_ID", albumId)
         startActivity(intent)

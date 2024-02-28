@@ -22,7 +22,9 @@ class VerCanciones : AppCompatActivity() {
 
 
     lateinit var album: Album
-    lateinit var listaDeCanciones: List<Cancion>
+    var listaDeCanciones: List<Cancion> = emptyList()  // Inicializar como lista vacía
+    lateinit var adaptadorCanciones: CancionAdapter
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,7 @@ class VerCanciones : AppCompatActivity() {
                     nombreAlbumTextView.text = album.nombre
 
                     // Configurar el Adapter para el ListView con el nuevo adaptador
-                    val adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
+                    adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
                     val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
                     listViewCanciones.adapter = adaptadorCanciones
 
@@ -70,6 +72,22 @@ class VerCanciones : AppCompatActivity() {
                         // Mostrar SnackBar con el mensaje de la canción agregada
                         mostrarSnackbar("Canción Agregada: $nombreCancionAgregada")
                     }
+
+                    // Después de agregar la canción a Firestore
+                    AlbumCRUD().obtenerCancionesPorAlbumId(album.id)
+                        .addOnSuccessListener { querySnapshot ->
+                            // Mapear los documentos a objetos Cancion
+                            listaDeCanciones = querySnapshot.documents.map { CancionCRUD.createCancionFromDocument(it) }
+
+                            // Crear el nuevo adaptador con la lista actualizada
+                            adaptadorCanciones = CancionAdapter(this, listaDeCanciones)
+
+                            // Obtener la referencia al ListView y establecer el nuevo adaptador
+                            val listViewCanciones = findViewById<ListView>(R.id.lv_Listado_Canciones)
+                            listViewCanciones.adapter = adaptadorCanciones
+
+
+                        }
 
                     // Implementar Menú de Opciones en el ListView de Canciones
                     val listViewCancionesContextMenu = findViewById<ListView>(R.id.lv_Listado_Canciones)
