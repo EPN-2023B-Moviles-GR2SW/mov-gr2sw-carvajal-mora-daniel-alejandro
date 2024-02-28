@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.examen_segundo_bimestre.Controller.AlbumAdapter
 import com.example.examen_segundo_bimestre.Controller.AlbumCRUD
+import com.example.examen_segundo_bimestre.Controller.CancionCRUD
 import com.example.examen_segundo_bimestre.Model.Album
 import com.example.examen_segundo_bimestre.R
 import com.example.examen_segundo_bimestre.ui.theme.Examen_Segundo_BimestreTheme
@@ -28,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : ComponentActivity() {
 
     var posAlbumSeleccionado = 0
-    var idAlbumSeleccionado = 0
+    var idAlbumSeleccionado: String? = null
     lateinit var adaptador: AlbumAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class MainActivity : ComponentActivity() {
         }
 
         // Crear el Adapter
-        val adaptador = AlbumAdapter(this, mutableListOf()) // inicializar el adaptador con una lista vacía
+        adaptador = AlbumAdapter(this, mutableListOf()) // inicializar el adaptador con una lista vacía
         listViewAlbumes.adapter = adaptador
 
         // Obtener la lista de álbumes desde Firestore
@@ -163,13 +164,26 @@ class MainActivity : ComponentActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("¿Desea Eliminar el Álbum?")
         builder.setPositiveButton("Eliminar") { dialog, which ->
-            if (idAlbumSeleccionado != -1) {
-                // Llamada a la función para eliminar el álbum por ID
-                AlbumCRUD().removeAlbum(idAlbumSeleccionado.toString())
-                // Actualizar la lista de álbumes en el adaptador
-                adaptador.actualizarLista(listOf())
-                // Notificar al Adapter que los datos han cambiado
-                adaptador.notifyDataSetChanged()
+            if (!idAlbumSeleccionado.isNullOrEmpty()) {
+                // Eliminar álbum y sus canciones asociadas
+                AlbumCRUD().removeAlbum(idAlbumSeleccionado!!)
+                AlbumCRUD().eliminarCancionesAsociadasAlAlbum(idAlbumSeleccionado!!)
+
+                // Obtener la lista de álbumes actualizada después de la eliminación
+                AlbumCRUD().obtenerTodosAlbumes()
+                    .addOnSuccessListener { querySnapshot ->
+                        val listaAlbumes = mutableListOf<Album>()
+                        for (document in querySnapshot) {
+                            val album = AlbumCRUD.crearAlbumFromDocument(document)
+                            listaAlbumes.add(album)
+                        }
+                        // Actualizar el adaptador con la nueva lista de álbumes
+                        adaptador.actualizarLista(listaAlbumes)
+                    }
+                    .addOnFailureListener { exception ->
+                        // Manejar errores al obtener la lista de álbumes
+                    }
+
                 // Muestra el Snackbar
                 mostrarSnackbarEliminado("Álbum Eliminado Exitosamente")
             }
@@ -181,14 +195,13 @@ class MainActivity : ComponentActivity() {
 
     private fun obtenerIdAlbumSeleccionado(albumSeleccionado: Album?) {
         if (albumSeleccionado != null) {
-            val idAlbumSeleccionado = albumSeleccionado.id
-            // Ahora puedes utilizar idAlbumSeleccionado en este bloque
-            // o llamar a otras funciones que dependan del id
-            // ...
+            idAlbumSeleccionado = albumSeleccionado.id
+            // Resto del código...
         } else {
             // Manejar el caso en el que albumSeleccionado es nulo
         }
     }
+
 
     // SnackBar
     private fun mostrarSnackbar(nombreAlbum: String?) {

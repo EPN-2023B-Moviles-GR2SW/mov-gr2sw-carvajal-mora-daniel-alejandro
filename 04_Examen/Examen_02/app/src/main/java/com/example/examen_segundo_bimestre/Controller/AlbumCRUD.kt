@@ -40,7 +40,7 @@ class AlbumCRUD {
         return db.collection("albums").document(id).get()
     }
 
-
+    // Funcion para crear un nuevo Album dentro de Firestore
     fun crearAlbum(album: Album) {
         val albumData = hashMapOf(
             "nombre" to album.nombre,
@@ -58,6 +58,7 @@ class AlbumCRUD {
             }
     }
 
+    // Funcion para actualizar el Album de Firestore con nuevos datos
     fun updateAlbum(id: String, album: Album) {
         val albumData = hashMapOf(
             "nombre" to album.nombre,
@@ -71,6 +72,7 @@ class AlbumCRUD {
         db.collection("albums").document(id).set(albumData)
     }
 
+    // Funcion para eliminar el Album de Firestore
     fun removeAlbum(id: String) {
         db.collection("albums").document(id).delete()
     }
@@ -80,22 +82,19 @@ class AlbumCRUD {
         return db.collection("canciones").whereEqualTo("albumId", albumId).get()
     }
 
-    fun obtenerAlbumPorId(context: Context, albumId: Int, onAlbumObtenido: (Album?) -> Unit) {
-        val albumDocument = db.collection("albums").document(albumId.toString())
-
-        albumDocument.get()
-            .addOnSuccessListener { documentSnapshot ->
-                val album = if (documentSnapshot.exists()) {
-                    AlbumCRUD.crearAlbumFromDocument(documentSnapshot)
-                } else {
-                    null
+    // Funcion para eliminar las canciones asociadas a un album por su id
+    fun eliminarCancionesAsociadasAlAlbum(albumId: String) {
+        // Obtener y eliminar las canciones asociadas al álbum
+        obtenerCancionesPorAlbumId(albumId)
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot) {
+                    val cancionId = document.id
+                    // Eliminar la canción
+                    CancionCRUD().removeCancion(cancionId)
                 }
-
-                onAlbumObtenido(album)
             }
-            .addOnFailureListener { e ->
-                // Manejar el fallo, por ejemplo, mostrar un mensaje al usuario
-                onAlbumObtenido(null)
+            .addOnFailureListener { exception ->
+                // Manejar errores al obtener la lista de canciones
             }
     }
 }

@@ -7,7 +7,7 @@ data class Album(
     @DocumentId
     @get:PropertyName("id")
     @set:PropertyName("id")
-    var id: String = "",
+    var id: String,
     var nombre: String,
     var artista: String,
     var anioLanzamiento: Int,
