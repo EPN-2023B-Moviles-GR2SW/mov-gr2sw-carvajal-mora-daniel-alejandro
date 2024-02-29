@@ -3,6 +3,7 @@ package com.example.proyecto_segundo_bimestre.Views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -18,6 +19,8 @@ import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptador
 import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorJuegosPopulares
 
 class BuscarVideojuego : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buscar_videojuego)
@@ -97,6 +100,24 @@ class BuscarVideojuego : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adaptador
         recyclerView.itemAnimator = DefaultItemAnimator()
+
+        // Configurar el OnClickListener para manejar clics en elementos del RecyclerView
+        adaptador.setOnItemClickListener(object : RecyclerViewAdaptadorJuegosBuscados.OnItemClickListener {
+            override fun onItemClick(videojuego: Videojuego) {
+                val intent = Intent(this@BuscarVideojuego, AgregarJuego::class.java)
+                intent.putExtra("nombreJuego", videojuego.nombreJuego)
+                intent.putExtra("plataforma", videojuego.plataforma)
+                intent.putExtra("fechadeLanzamiento", videojuego.fechaLanzamiento)
+                intent.putExtra("genero", videojuego.genero)
+                intent.putExtra("desarrolladoraJuego", videojuego.desarrolladoraJuego)
+                intent.putExtra("distribuidorJuego", videojuego.distribuidorJuego)
+                intent.putExtra("portadaJuego", videojuego.portadaJuego) // Pasa directamente el ID del recurso drawable
+                intent.putExtra("rating", videojuego.rating)
+                startActivity(intent)
+            }
+        })
+
+
         adaptador.notifyDataSetChanged()
     }
 }

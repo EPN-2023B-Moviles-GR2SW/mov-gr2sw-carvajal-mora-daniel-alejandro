@@ -35,6 +35,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_Mi_Cuenta"
+        android:layout_width="88dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/botones_personalizados"
+        android:text="Mi Cuenta"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txt_Juegos_Populares"
         android:layout_width="wrap_content"
@@ -53,7 +67,7 @@
         android:id="@+id/txt_Ultimos_Juegos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:text="Últimos Lanzamientos"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
@@ -67,7 +81,7 @@
         android:id="@+id/txt_Mis_Listas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:text="Mis Listas"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
@@ -91,7 +105,7 @@
         android:id="@+id/btn_Buscar_Catalogo"
         android:layout_width="370dp"
         android:layout_height="49dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/botones_personalizados_2"
         android:text="Descubre todo el Catálogo"
         android:textColor="#FFFFFF"
@@ -114,7 +128,7 @@
         android:id="@+id/btn_Juegos_Favs"
         android:layout_width="162dp"
         android:layout_height="76dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/botones_personalizados_2"
         android:text="Videojuegos Favoritos"
         android:textColor="#FFFFFF"
@@ -128,7 +142,7 @@
         android:id="@+id/btn_Juegos_2023"
         android:layout_width="162dp"
         android:layout_height="76dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/botones_personalizados_2"
         android:text="Lo que jugúe en el año 2023"
@@ -137,14 +151,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_Mis_Listas" />
 
-    <TextView
-        android:id="@+id/Footer_Home"
-        android:layout_width="412dp"
-        android:layout_height="54dp"
-        android:background="#161414"
-        android:backgroundTint="#161414"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

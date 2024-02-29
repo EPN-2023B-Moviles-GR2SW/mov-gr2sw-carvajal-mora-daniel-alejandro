@@ -16,11 +16,36 @@ class RecyclerViewAdaptadorJuegosBuscados(
     private val recyclerView: RecyclerView
 ): RecyclerView.Adapter<RecyclerViewAdaptadorJuegosBuscados.MyViewHolder>() {
 
+    private var itemClickListener: OnItemClickListener? = null
+
+    // Interfaz para manejar clics en elementos
+    interface OnItemClickListener {
+        fun onItemClick(videojuego: Videojuego)
+    }
+
+    // Variable para almacenar el listener
+    private var listener: OnItemClickListener? = null
+
+    // Método para establecer el listener
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     // Inicializar los componentes visuales de la Interfaz para el Adaptador Personalizado
     inner class MyViewHolder(view: View): RecyclerView.ViewHolder(view){
         val imgBuscado: ImageView = itemView.findViewById(R.id.img_Juego_Buscado)
         val nombreBuscado: TextView = itemView.findViewById(R.id.txt_Nombre_Juego)
         val consolaBuscado: TextView = itemView.findViewById(R.id.txt_Consola_Juego)
+
+        init {
+            // Configura el OnClickListener para el elemento del RecyclerView
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    itemClickListener?.onItemClick(lista[position])
+                }
+            }
+        }
     }
 
     // Setear el layour que vamos a utilizar
@@ -42,6 +67,13 @@ class RecyclerViewAdaptadorJuegosBuscados(
 
         val resourceId = buscadoActual.portadaJuego
         holder.imgBuscado.setImageResource(resourceId)
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(lista[position])
+        }
     }
+
+
+
 
 }

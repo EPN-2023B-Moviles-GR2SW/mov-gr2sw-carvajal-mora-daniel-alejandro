@@ -37,6 +37,20 @@ class DashboardInicio : AppCompatActivity() {
             irActividad(BuscarVideojuego::class.java)
         }
 
+        val btnJuegosFavs = findViewById<Button>(R.id.btn_Juegos_Favs)
+        btnJuegosFavs.setOnClickListener {
+            irActividad(MiColeccion::class.java)
+        }
+
+        val btnJuegos2023 = findViewById<Button>(R.id.btn_Juegos_2023)
+        btnJuegos2023.setOnClickListener {
+            irActividad(MiColeccion::class.java)
+        }
+
+        val btnMiCuenta = findViewById<Button>(R.id.btn_Mi_Cuenta)
+        btnMiCuenta.setOnClickListener {
+            irActividad(MiCuenta::class.java)
+        }
 
         // Verificar si hay un mensaje en el intent
         val mensaje = intent.getStringExtra("mensaje")

@@ -1,5 +1,6 @@
 package com.example.proyecto_segundo_bimestre.Views
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -83,6 +84,11 @@ class RegistrarUsuario : AppCompatActivity() {
 
                     // Almacenamos el nuevo usuario en la base de datos
                     database.child("usuarios").child(nuevoUsuario.id).setValue(nuevoUsuario)
+
+                    // Almacenar el nombre de usuario en preferencias compartidas
+                    val sharedPreferencesEditor = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).edit()
+                    sharedPreferencesEditor.putString("nombre", nuevoUsuario.nombre)
+                    sharedPreferencesEditor.apply()
 
                     // Mostrar Snackbar y redirigir a MainActivity con mensaje
                     irActividadConMensaje(MainActivity::class.java, "Cuenta creada: $nombreUsuario")
