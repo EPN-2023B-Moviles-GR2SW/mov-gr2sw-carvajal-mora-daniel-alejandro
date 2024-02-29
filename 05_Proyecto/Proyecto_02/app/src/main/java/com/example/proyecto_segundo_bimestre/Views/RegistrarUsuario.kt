@@ -85,7 +85,6 @@ class RegistrarUsuario : AppCompatActivity() {
                     database.child("usuarios").child(nuevoUsuario.id).setValue(nuevoUsuario)
 
                     // Mostrar Snackbar y redirigir a MainActivity con mensaje
-                    mostrarSnackbar("Cuenta creada: $nombreUsuario")
                     irActividadConMensaje(MainActivity::class.java, "Cuenta creada: $nombreUsuario")
                 } else {
                     // Si falla el registro, puedes manejarlo aquí

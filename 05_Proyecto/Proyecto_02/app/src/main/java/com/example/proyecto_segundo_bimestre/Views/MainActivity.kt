@@ -43,9 +43,4 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
     }
 
-    fun irActividadConMensaje(clase: Class<*>, mensaje: String) {
-        val intent = Intent(this, clase)
-        intent.putExtra("mensaje", mensaje)
-        startActivity(intent)
-    }
 }

@@ -77,11 +77,8 @@ class IniciarSesion : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Inicio de sesión exitoso
                     // Mostrar Snackbar de inicio de sesión exitoso
-                    mostrarSnackbar("Inicio de sesión exitoso")
                     irActividadConMensaje(DashboardInicio::class.java, "Inicio de sesión exitoso")
 
-                    // Redirigir a DashboardInicio
-                    irActividad(DashboardInicio::class.java)
                 } else {
                     // Mostrar Snackbar de error en el inicio de sesión
                     mostrarSnackbar("Error en el inicio de sesión")

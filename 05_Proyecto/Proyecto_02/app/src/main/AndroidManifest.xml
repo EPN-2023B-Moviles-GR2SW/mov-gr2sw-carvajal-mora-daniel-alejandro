@@ -13,6 +13,12 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".Views.AgregarJuego"
+            android:exported="false" />
+        <activity
+            android:name=".Views.BuscarVideojuego"
+            android:exported="false" />
+        <activity
             android:name=".Views.DashboardInicio"
             android:exported="false" />
         <activity
