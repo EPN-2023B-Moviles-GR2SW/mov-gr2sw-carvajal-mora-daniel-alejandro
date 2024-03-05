@@ -3,7 +3,6 @@ package com.example.proyecto_segundo_bimestre.Views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,9 +13,8 @@ import com.example.proyecto_segundo_bimestre.Data.BaseDeDatos.Companion.arregloJ
 import com.example.proyecto_segundo_bimestre.Data.BaseDeDatos.Companion.arregloJuegosPopulares
 import com.example.proyecto_segundo_bimestre.Model.Videojuego
 import com.example.proyecto_segundo_bimestre.R
-import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorFiltroConsolas
-import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorJuegosBuscados
-import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorJuegosPopulares
+import com.example.proyecto_segundo_bimestre.RecyclerViews.RVAdaptFiltroConsolas
+import com.example.proyecto_segundo_bimestre.RecyclerViews.RVAdaptJuegosBuscados
 
 class BuscarVideojuego : AppCompatActivity() {
 
@@ -53,7 +51,7 @@ class BuscarVideojuego : AppCompatActivity() {
         // Configura el LinearLayoutManager con orientación horizontal
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val adaptador = RecyclerViewAdaptadorFiltroConsolas(
+        val adaptador = RVAdaptFiltroConsolas(
             this,
             BaseDeDatos.arregloConsola,
             recyclerView
@@ -96,13 +94,13 @@ class BuscarVideojuego : AppCompatActivity() {
 
     fun actualizarRecyclerView(resultados: ArrayList<Videojuego>) {
         val recyclerView = findViewById<RecyclerView>(R.id.rv_juegos_buscados)
-        val adaptador = RecyclerViewAdaptadorJuegosBuscados(this, resultados, recyclerView)
+        val adaptador = RVAdaptJuegosBuscados(this, resultados, recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adaptador
         recyclerView.itemAnimator = DefaultItemAnimator()
 
         // Configurar el OnClickListener para manejar clics en elementos del RecyclerView
-        adaptador.setOnItemClickListener(object : RecyclerViewAdaptadorJuegosBuscados.OnItemClickListener {
+        adaptador.setOnItemClickListener(object : RVAdaptJuegosBuscados.OnItemClickListener {
             override fun onItemClick(videojuego: Videojuego) {
                 val intent = Intent(this@BuscarVideojuego, AgregarJuego::class.java)
                 intent.putExtra("nombreJuego", videojuego.nombreJuego)

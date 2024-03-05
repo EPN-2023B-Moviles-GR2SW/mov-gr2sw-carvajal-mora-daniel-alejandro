@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_segundo_bimestre.Model.Videojuego
 import com.example.proyecto_segundo_bimestre.R
 
-class RecyclerViewAdaptadorJuegosPopulares(
+class RVAdaptJuegosPopulares(
     private val contexto: Context, // Corregido: Cambiado a Context
     private val lista: ArrayList<Videojuego>,
     private val recyclerView: RecyclerView
-) : RecyclerView.Adapter<RecyclerViewAdaptadorJuegosPopulares.MyViewHolder>() {
+) : RecyclerView.Adapter<RVAdaptJuegosPopulares.MyViewHolder>() {
 
     // Inicializar los componentes visuales de la Interfaz para el Adaptador Personalizado
     inner class MyViewHolder(view: View): RecyclerView.ViewHolder(view){
@@ -21,7 +21,7 @@ class RecyclerViewAdaptadorJuegosPopulares(
     }
 
     // Setear el layour que vamos a utilizar
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewAdaptadorJuegosPopulares.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RVAdaptJuegosPopulares.MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_juegos_populares, parent, false)
         return MyViewHolder(itemView)
     }
@@ -32,7 +32,7 @@ class RecyclerViewAdaptadorJuegosPopulares(
     }
 
     // Setear los datos para la iteracion
-    override fun onBindViewHolder(holder: RecyclerViewAdaptadorJuegosPopulares.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RVAdaptJuegosPopulares.MyViewHolder, position: Int) {
         val recienteActual = lista[position]
         val resourceId = recienteActual.portadaJuego
         holder.imgReciente.setImageResource(resourceId)

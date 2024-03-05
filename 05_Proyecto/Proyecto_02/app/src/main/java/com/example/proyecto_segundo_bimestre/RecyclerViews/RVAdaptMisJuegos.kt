@@ -10,12 +10,12 @@ import com.example.proyecto_segundo_bimestre.Model.Videojuego
 import com.example.proyecto_segundo_bimestre.R
 
 
-class RecyclerViewAdaptadorMisJuegos(
+class RVAdaptMisJuegos(
     private val context: Context,
     private var lista: ArrayList<Videojuego>,
     private val recyclerView: RecyclerView,
     private val onItemClickListener: OnItemClickListener
-) : RecyclerView.Adapter<RecyclerViewAdaptadorMisJuegos.MyViewHolder>() {
+) : RecyclerView.Adapter<RVAdaptMisJuegos.MyViewHolder>() {
 
     // ViewHolder
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -37,7 +37,7 @@ class RecyclerViewAdaptadorMisJuegos(
     }
 
     // Setear el layout que vamos a utilizar
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewAdaptadorMisJuegos.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RVAdaptMisJuegos.MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_mis_juegos, parent, false)
         return MyViewHolder(itemView)
     }
@@ -48,7 +48,7 @@ class RecyclerViewAdaptadorMisJuegos(
     }
 
     // Setear los datos para la iteración
-    override fun onBindViewHolder(holder: RecyclerViewAdaptadorMisJuegos.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RVAdaptMisJuegos.MyViewHolder, position: Int) {
         val recienteActual = lista[position]
         val resourceId = recienteActual.portadaJuego
         holder.imgJuego.setImageResource(resourceId)

@@ -1,17 +1,13 @@
 package com.example.proyecto_segundo_bimestre.Views
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import com.example.proyecto_segundo_bimestre.Data.BaseDeDatos
-import com.example.proyecto_segundo_bimestre.Model.Videojuego
 import com.example.proyecto_segundo_bimestre.R
-import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorMisJuegos
 
 class AgregarJuego : AppCompatActivity() {
 

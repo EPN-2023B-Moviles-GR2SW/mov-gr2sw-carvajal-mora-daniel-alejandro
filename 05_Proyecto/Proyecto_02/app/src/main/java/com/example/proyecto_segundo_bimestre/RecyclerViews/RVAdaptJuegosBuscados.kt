@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_segundo_bimestre.Model.Videojuego
 import com.example.proyecto_segundo_bimestre.R
 
-class RecyclerViewAdaptadorJuegosBuscados(
+class RVAdaptJuegosBuscados(
     private val contexto: Context, // Corregido: Cambiado a Context
     private val lista: ArrayList<Videojuego>,
     private val recyclerView: RecyclerView
-): RecyclerView.Adapter<RecyclerViewAdaptadorJuegosBuscados.MyViewHolder>() {
+): RecyclerView.Adapter<RVAdaptJuegosBuscados.MyViewHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
 
@@ -49,7 +49,7 @@ class RecyclerViewAdaptadorJuegosBuscados(
     }
 
     // Setear el layour que vamos a utilizar
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewAdaptadorJuegosBuscados.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RVAdaptJuegosBuscados.MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_juegos_buscados, parent, false)
         return MyViewHolder(itemView)
     }
@@ -60,7 +60,7 @@ class RecyclerViewAdaptadorJuegosBuscados(
     }
 
     // Setear los datos para la iteracion
-    override fun onBindViewHolder(holder: RecyclerViewAdaptadorJuegosBuscados.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RVAdaptJuegosBuscados.MyViewHolder, position: Int) {
         val buscadoActual = lista[position]
         holder.nombreBuscado.text = buscadoActual.nombreJuego
         holder.consolaBuscado.text = buscadoActual.plataforma

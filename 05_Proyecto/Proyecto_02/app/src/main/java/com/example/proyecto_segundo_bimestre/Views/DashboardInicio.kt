@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_segundo_bimestre.Data.BaseDeDatos
 import com.example.proyecto_segundo_bimestre.R
-import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorJuegosPopulares
+import com.example.proyecto_segundo_bimestre.RecyclerViews.RVAdaptJuegosPopulares
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
@@ -85,7 +85,7 @@ class DashboardInicio : AppCompatActivity() {
         // Configura el LinearLayoutManager con orientación horizontal
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val adaptador = RecyclerViewAdaptadorJuegosPopulares(
+        val adaptador = RVAdaptJuegosPopulares(
             this,
             BaseDeDatos.arregloJuegosPopulares,
             recyclerView
@@ -103,7 +103,7 @@ class DashboardInicio : AppCompatActivity() {
         // Configura el LinearLayoutManager con orientación horizontal
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val adaptador = RecyclerViewAdaptadorJuegosPopulares(
+        val adaptador = RVAdaptJuegosPopulares(
             this,
             BaseDeDatos.arregloJuegosNuevos,
             recyclerView

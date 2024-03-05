@@ -5,16 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_segundo_bimestre.Model.Consola
 import com.example.proyecto_segundo_bimestre.R
 
-class RecyclerViewAdaptadorFiltroConsolas(
+class RVAdaptFiltroConsolas(
     private val contexto: Context,
     private val lista: ArrayList<Consola>,
     private val recyclerView: RecyclerView
-) : RecyclerView.Adapter<RecyclerViewAdaptadorFiltroConsolas.MyViewHolder>() {
+) : RecyclerView.Adapter<RVAdaptFiltroConsolas.MyViewHolder>() {
 
     private var onItemClick: ((Consola) -> Unit)? = null
 

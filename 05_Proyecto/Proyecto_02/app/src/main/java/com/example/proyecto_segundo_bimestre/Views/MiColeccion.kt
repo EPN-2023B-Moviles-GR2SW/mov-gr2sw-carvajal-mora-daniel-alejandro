@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_segundo_bimestre.Model.Videojuego
 import com.example.proyecto_segundo_bimestre.R
-import com.example.proyecto_segundo_bimestre.RecyclerViews.RecyclerViewAdaptadorMisJuegos
+import com.example.proyecto_segundo_bimestre.RecyclerViews.RVAdaptMisJuegos
 
 class MiColeccion : AppCompatActivity() {
 
     private var misJuegos = ArrayList<Videojuego>()
-    private var adaptadorMisJuegos: RecyclerViewAdaptadorMisJuegos? = null
+    private var adaptadorMisJuegos: RVAdaptMisJuegos? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +60,11 @@ class MiColeccion : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // Crear un nuevo adaptador y asignarlo a tu RecyclerView
-        adaptadorMisJuegos = RecyclerViewAdaptadorMisJuegos(
+        adaptadorMisJuegos = RVAdaptMisJuegos(
             this,
             ArrayList(),  // Crear una nueva instancia de ArrayList
             recyclerView,
-            object : RecyclerViewAdaptadorMisJuegos.OnItemClickListener {
+            object : RVAdaptMisJuegos.OnItemClickListener {
                 override fun onItemClick(videojuego: Videojuego) {
                     // Lógica para manejar el clic en un juego
                 }
